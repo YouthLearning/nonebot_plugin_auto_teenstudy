@@ -10,10 +10,11 @@
 </div>
 
 
-## 各地区使用方式
+## 各地区使用方式（已经支持地区）
 
 - [江西地区](./nonebot_plugin_auto_teenstudy/resource/江西地区.md)
 - [湖北地区](./nonebot_plugin_auto_teenstudy/resource/湖北地区.md)
+- [浙江地区](./nonebot_plugin_auto_teenstudy/resource/浙江地区.md)
 
 ## 参考
 
@@ -22,7 +23,7 @@
 - [青春湖北自动提交](https://github.com/Samueli924/TeenStudy)
 
 - [28位openid随机生成和抓包](https://hellomango.gitee.io/mangoblog/2021/09/26/other/%E9%9D%92%E5%B9%B4%E5%A4%A7%E5%AD%A6%E4%B9%A0%E6%8A%93%E5%8C%85/)
-
+- [定时推送大学习答案，完成截图](https://github.com/ayanamiblhx/nonebot_plugin_youthstudy)
 ##  安装及更新
 
 1. 使用`git clone https://github.com/ZMXC01/nonebot_plugin_auto_teenstudy.git`指令克隆本仓库或下载压缩包文件
@@ -45,6 +46,12 @@
   SUPERUSERS=[""]
   ```
 
+- 浙江地区至少需要额外配置一个关注了青春浙江公众号微信的openid,需要自行抓包
+
+  ```py
+  OPENID_ZJ=[""]
+  ```
+  
 - 请确保已安装以下第三方库（插件运行失败请检查第三方库有没有装完整）
 
   ```py
@@ -92,9 +99,11 @@ Ps:查组织功能对湖北用户无效！
 - [ ] 优化 Bot
 - [ ] ~~逐步升级成群管插件~~
 
-
-
 ## 更新日志
+### 2022/06/05
+
+- 增加浙江地区
+- 将爬取[江西](./nonebot_plugin_auto_teenstudy/resource/crawl/crawjx.py)和[浙江](./nonebot_plugin_auto_teenstudy/resource/crawl/crawlzj.py)地区高校团支部数据（抓取nid）文件上传
 ### 2022/06/04
 
 - 将代码上传至pypi，可使用`pip install nonebot-plugin-auto-teenstudy`指令安装本插件

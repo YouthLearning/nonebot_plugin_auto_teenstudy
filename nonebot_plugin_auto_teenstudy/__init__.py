@@ -13,9 +13,11 @@ from nonebot.adapters.onebot.v11 import MessageSegment, Event
 from .msg_pic import pic
 from .dxx_hb import auto_hb
 from .dxx_jx import auto_jx
+from .dxx_zj import auto_zj
 from .get_src import get_pic
 
 super_id = nonebot.get_driver().config.superusers  # 超管id
+openid_zj = nonebot.get_driver().config.openid_zj  # 浙江地区openid
 path = os.path.dirname(__file__) + '/data'  # 数据存放目录
 pic_msg = False  # 初始机器人图片回复状态，默认关闭
 # 开启机器人图片回复功能
@@ -65,6 +67,9 @@ async def dxx(event: Event):
                     status = content['status']
                 elif item['area'] == '江西':
                     content = await auto_jx(send_id)
+                    status = content['status']
+                elif item['area'] == '浙江':
+                    content = await auto_zj(send_id)
                     status = content['status']
                 else:
                     status = 404
@@ -182,6 +187,27 @@ async def set_dxx(event: Event):
                     with open(path + '/dxx_list.json', 'w', encoding='utf-8') as f:
                         json.dump(obj, f, ensure_ascii=False, indent=4)
                     content = await auto_jx(send_id)
+                    status = content['status']
+                else:
+                    status = 404
+            elif area == '浙江':
+                with open(path + '/dxx_zj.json', 'r', encoding='utf-8') as f:
+                    n = json.load(f)
+                mark1 = False
+                for item1 in n:
+                    if item1['school'] == danwei1 and item1['college'] == danwei2 and item1['class'] == danwei3:
+                        nid = item1['id3']
+                        mark1 = True
+                        break
+                if mark1:
+                    for i in openid_zj:
+                        openid = str(i)
+                    data = {'qq': qq, 'area': area, 'openid': openid, 'uid': uid, 'name': name, 'danwei1': danwei1,
+                            'danwei2': danwei2, 'danwei3': danwei3, 'nid': nid, 'title': title}
+                    obj.append(data)
+                    with open(path + '/dxx_list.json', 'w', encoding='utf-8') as f:
+                        json.dump(obj, f, ensure_ascii=False, indent=4)
+                    content = await auto_zj(send_id)
                     status = content['status']
                 else:
                     status = 404
@@ -329,6 +355,27 @@ async def add_dxx(event: Event):
                     status = content['status']
                 else:
                     status = 0
+            elif area == '浙江':
+                with open(path + '/dxx_zj.json', 'r', encoding='utf-8') as f:
+                    n = json.load(f)
+                mark1 = False
+                for item1 in n:
+                    if item1['school'] == danwei1 and item1['college'] == danwei2 and item1['class'] == danwei3:
+                        nid = item1['id3']
+                        mark1 = True
+                        break
+                if mark1:
+                    for i in openid_zj:
+                        openid = str(i)
+                    data = {'qq': qq, 'area': area, 'openid': openid, 'uid': uid, 'name': name, 'danwei1': danwei1,
+                            'danwei2': danwei2, 'danwei3': danwei3, 'nid': nid, 'title': title}
+                    obj.append(data)
+                    with open(path + '/dxx_list.json', 'w', encoding='utf-8') as f:
+                        json.dump(obj, f, ensure_ascii=False, indent=4)
+                    content = await auto_zj(send_id)
+                    status = content['status']
+                else:
+                    status = 404
             else:
                 status = 0
             if status == 200:
@@ -467,6 +514,9 @@ async def my_dxx(event: Event):
                 elif area == '江西':
                     nid = item['nid']
                     message = f'大学习用户信息查询成功！\n姓名：{name}\nQQ号：{check_id}\n地区：{area}\nopenid:{openid}\nnid:{nid}\n学校：{danwei1}\n学院：{danwei2}\n团支部(班级)：{danwei3}'
+                elif area == '浙江':
+                    nid = item['nid']
+                    message = f'大学习用户信息查询成功！\n姓名：{name}\nQQ号：{check_id}\n地区：{area}\nopenid:{openid}\nnid:{nid}\n学校：{danwei1}\n学院：{danwei2}\n团支部(班级)：{danwei3}'
                 else:
                     pass
                 if pic_msg:
@@ -553,7 +603,7 @@ async def dxx_help(event: Event):
     send_id = event.get_user_id()
     try:
         message = '一、主人专用\n1、添加大学习配置|添加大学习用户|add_dxx\n指令格式：添加大学习配置#QQ号#地区#姓名#学校#团委(学院)#团支部(班级)\n2、删除大学习配置|删除大学习用户|del_dxx\n指令格式：删除大学习配置#QQ号\n' \
-                  '3、查看大学习用户列表\n4、查看大学习用户|查看大学习配置|check_dxx_user\n指令格式：查看大学习用户#QQ号\n5、完成大学习|finish_dxx\n指令格式：完成大学习#QQ号\n6、开启（关闭）图片回复|图片回复开（关）\n二、全员可用\n1、提交大学习\n2、我的大学习|查看我的大学习|my_dxx\n3、大学习功能|大学习帮助|dxx_help\n' \
+                  '3、查看大学习用户列表\n4、查看大学习用户|查看大学习配置|check_dxx_user\n指令格式：查看大学习用户#QQ号\n5、完成大学习|finish_dxx\n指令格式：完成大学习#QQ号\n二、全员可用\n1、提交大学习\n2、我的大学习|查看我的大学习|my_dxx\n3、大学习功能|大学习帮助|dxx_help\n' \
                   '4、设置大学习配置|set_dxx\n指令格式：设置大学习配置#地区#姓名#学校#团委(学院)#团支部(班级)\n5、查组织|查班级|check_class\n指令格式：查组织#地区简写(例江西为：jx)#学校名称#团委名称\nPs:查组织功能对湖北用户无效！'
         if pic_msg:
             pict = await pic(message)
@@ -591,6 +641,9 @@ async def finish_dxx(event: Event):
                     status = content['status']
                 elif item['area'] == '江西':
                     content = await auto_jx(finish_id)
+                    status = content['status']
+                elif item['area'] == '浙江':
+                    content = await auto_zj(finish_id)
                     status = content['status']
                 else:
                     status = 404
