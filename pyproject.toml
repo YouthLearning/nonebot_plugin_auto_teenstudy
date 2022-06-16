@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "nonebot_plugin_auto_teenstudy"
-version = "0.1.1"
+version = "0.1.2"
 description = "基于nonebot异步框架的青年大学自动提交插件"
-authors = ["ZMXC01 <2393899036@qq.com>"]
+authors = ["ZM25XC <2393899036@qq.com>"]
 license="MIT"
 readme="README.md"
-homepage="https://github.com/ZMXC01/nonebot_plugin_auto_teenstudy"
+homepage="https://github.com/ZM25XC/nonebot_plugin_auto_teenstudy"
 [tool.poetry.dependencies]
 python = "^3.6"
 anti_useragent="~=1.0.7"

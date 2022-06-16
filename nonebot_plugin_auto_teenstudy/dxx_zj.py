@@ -7,7 +7,6 @@ path = os.path.dirname(__file__) + '/data'
 
 
 async def auto_zj(send_id):
-    # openid = 'oO-a2t8ThYwqCMwYcGiXR9PbaBeM'
     with open(path + '/dxx_list.json', 'r', encoding='utf-8') as f:
         obj = json.load(f)
     try:
