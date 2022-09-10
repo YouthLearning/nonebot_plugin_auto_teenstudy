@@ -1,13 +1,30 @@
 <div align="center">
-    <img src="https://s4.ax1x.com/2022/03/05/bw2k9A.png" alt="bw2k9A.png" border="0"/>
+    <img src="https://gchat.qpic.cn/gchatpic_new/0/0-0-9865300DB8C27C86C050DAEF684C66D4/0" alt="auto_teenstudy.png" border="0" width="500px" height="500px"/>
     <h1>nonebot_plugin_auto_teenstudy</h1>
     <b>基于nonebot2的青年大学习自动提交插件，用于自动完成大学习，在后台留下记录，返回完成截图</b>
     <br/>
     <a href="https://github.com/ZM25XC/nonebot_plugin_auto_teenstudy/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/ZM25XC/nonebot_plugin_auto_teenstudy?style=flat-square"></a>
     <a href="https://github.com/ZM25XC/nonebot_plugin_auto_teenstudy/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/ZM25XC/nonebot_plugin_auto_teenstudy?style=flat-square"></a>
     <a href="https://github.com/ZM25XC/nonebot_plugin_auto_teenstudy/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/ZM25XC/nonebot_plugin_auto_teenstudy?style=flat-square"></a>
-    <a href="https://github.com/ZM25XC/nonebot_plugin_auto_teenstudy/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/ZM25XC/nonebot_plugin_auto_teenstudy?style=flat-square"></a>
-</div>
+    <a href="https://pypi.python.org/pypi/nonebot_plugin_auto_teenstudy"><img src="https://img.shields.io/pypi/v/nonebot_plugin_auto_teenstudy?color=yellow" alt="pypi"></a>
+  	<a href="https://pypi.python.org/pypi/nonebot_plugin_auto_teenstudy">
+    <img src="https://img.shields.io/pypi/dm/nonebot_plugin_auto_teenstudy" alt="pypi download"></a>
+     <a href="https://github.com/ZM25XC/nonebot_plugin_auto_teenstudy">
+    <img src="https://visitor-badge.glitch.me/badge?page_id=https://github.com/ZM25XC/nonebot_plugin_auto_teenstudy" alt="nonebot_plugin_auto_teenstudy"></a>
+		<a href="https://github.com/ZM25XC/nonebot_plugin_auto_teenstudy/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/ZM25XC/nonebot_plugin_auto_teenstudy?style=flat-square"></a>
+
+
+* [各地区使用方式](#各地区使用方式（已经支持地区）)
+* [参考](#参考)
+* [安装和更新](#安装及更新)
+* [导入插件](#导入插件)
+* [机器人配置](#机器人配置)
+* [功能列表](#功能列表)
+* [提醒](#提醒)
+* [说明](#说明)
+* [To Do](#To Do)
+* [更新日志](#更新日志)
+
 
 
 ## 各地区使用方式（已经支持地区）
@@ -18,7 +35,10 @@
 - [安徽地区](./nonebot_plugin_auto_teenstudy/resource/安徽地区.md)
 - [山东地区](./nonebot_plugin_auto_teenstudy/resource/山东地区.md)
 - [四川地区](./nonebot_plugin_auto_teenstudy/resource/四川地区.md)
-
+- [河南地区](./nonebot_plugin_auto_teenstudy/resource/河南地区.md)
+- [江苏地区](./nonebot_plugin_auto_teenstudy/resource/江苏地区.md)
+- [辽宁地区](./nonebot_plugin_auto_teenstudy/resource/辽宁地区.md)
+- [上海地区](./nonebot_plugin_auto_teenstudy/resource/上海地区.md)
 
 **其他地区努力适配中**
 
@@ -79,16 +99,26 @@
 |     更新大学习     |           更新大学习           |            插件主人指令，用于手动更新青年大学习答案和完成截图             |
 |     推送大学习     |           推送大学习           |                插件主人指令，用于手动启动更新推送                 |
 |     一键提交      |        一键提交、全员大学习         | 插件主人（团支书）指令，一键提交所有（团支部）成员大学习，暂未解决ip池问题（维护中，暂不开放） |
+|    执行自动提交     |          执行自动提交           |               插件主人指令，手动启动自动提交大学习功能               |
+|    更改用户信息     |    更改用户信息#QQ号# 通知方式 群聊    |   插件主人指令，修改用户信息，可更改项目：openid、token 、通知方式、通知群聊    |
 |     一键提醒      |           一键提醒            |      插件主人（团支书）指令，提醒未完成大学习成员完成大学习（维护中，暂不开放）       |
 |     一键查询      |           一键查询            |         插件主人（团支书）指令，查询大学习完成情况（维护中，暂不开放）          |
 
+## 提醒
+
+- 需要cookie(token)的地区，抓取到cookie(token)后，请尽量别点进官方公众号，以免cookie(token)刷新
+- [各地区提交源码](https://github.com/ZM25XC/commit_dxx)
+
 ## 说明
+
 - 一键提交、一键提醒和一键查询功能维护更新。
 - 一键提醒和一键查询目前只能查询插件内的提交情况，无法查询公众号提交情况（目前已知福建、上海和安徽地区有接口可查询，正在考虑添加此功能），所以意义不大，暂时不开放。
 - ip池目前没有啥办法解决，大多地区提交大学习时验证SSL,需要https代理，目前免费的https代理少，不稳定。
 - 时间精力有限，目前只维护湖北和江西两个地区，其他地区出问题请提交Issues,我找个时间修，需要增加地区可以提交Pull requests
 - 觉得项目不错，不妨点个stars.
+
 ## To Do
+
 - [ ] 开发公众号统一推送
 - [ ] 增加ip池，防止多次用同一ip导致封ip
 - [ ] 增加更多地区支持
@@ -97,6 +127,20 @@
 
 ## 更新日志
 
+### 2022/09/10
+
+- 增加河南地区
+- 增加江苏地区
+- 增加辽宁地区
+- 增加上海地区
+- 增加修改用户信息功能，指令：`更改用户信息`
+- 增加手动启动自动提交功能，指令：`执行自动提交`
+- 分离自动提交功能，改为每周一11:30执行自动提交青年大学习功能
+- 修复`更新大学习`报错问题
+- 修复`设置大学习配置`指令不生效问题
+- 修复安徽地区提交失败问题
+- 修复湖北地区获取个人信息截图失败问题
+- 修复`完成学习`指令失效问题
 ### 2022/09/04
 - 更改添加用户方式（使用json格式添加）
 - 统一用户信息存储格式

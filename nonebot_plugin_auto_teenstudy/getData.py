@@ -38,9 +38,9 @@ async def get_own(send_id):
             if int(send_id) == int(item['qq']):
                 name = item['name']
                 uid = item['uid']
-                danwei1 = item['danwei1']
-                danwei2 = item['danwei2']
-                danwei3 = item['danwei3']
+                danwei1 = item['university']
+                danwei2 = item['college']
+                danwei3 = item['class_name']
                 text_all = danwei1 + danwei2 + danwei3
                 font = ImageFont.truetype(fontPath, 48)
                 path_list = []
@@ -78,11 +78,10 @@ async def get_own(send_id):
                 img.save(buf, format="PNG")
                 base64_str = base64.b64encode(buf.getbuffer()).decode()
                 content = "base64://" + base64_str
-                mark = True
-                break
+                return content
         if not mark:
             content = '用户信息不存在！'
-        return content
+            return content
     except Exception as e:
         content = f'出错了\n错误信息：{e}'
         return content
@@ -105,7 +104,7 @@ async def get_end_pic():
     img = Image.new('RGB', (end_img.width, bg_img.height), (255, 255, 255))
     draw = ImageDraw.Draw(img)
     img.paste(bg_img)
-    time = datetime.datetime.now().strftime('%H:%M')
+    time = (datetime.datetime.now() + datetime.timedelta(minutes=random.randint(5, 10))).strftime('%H:%M')
     draw.text((120, 30), text=time, font=font, fill='black')
     draw.text((1080 / 2 - (len(title) / 2) * 30, 130), text=title, font=font, fill='black')
     img.paste(end_img, (0, 200))
@@ -122,8 +121,9 @@ async def get_answer():
     title = list(answer_obj)[-1]["catalogue"]
     answer = list(answer_obj)[-1]["answer"]
     start_time = list(answer_obj)[-1]['time']
-    end_day = (datetime.datetime.strptime(list(answer_obj)[-1]["time"], "%Y年%m月%d日 %H:%M:%S")+datetime.timedelta(days=6)).strftime("%Y年%m月%d日")
-    end_time=f'{end_day} 22:00:00'
+    end_day = (datetime.datetime.strptime(list(answer_obj)[-1]["time"], "%Y年%m月%d日 %H:%M:%S") + datetime.timedelta(
+        days=6)).strftime("%Y年%m月%d日")
+    end_time = f'{end_day} 22:00:00'
     answer_bg = Image.open(dxx_bg_path + '/answer_bg.png')
     img = Image.new('RGB', (902, 987), (255, 255, 255))
     img.paste(answer_bg)
@@ -153,7 +153,7 @@ async def crawl_answer():
     resp_url = 'https://h5.cyol.com/special/weixin/sign.json'
     async with AsyncClient(headers=headers) as client:
         response = await client.get(url=resp_url, timeout=10)
-    response.encoding = response.apparent_encoding
+    response.encoding = response.charset_encoding
     code = json.loads(response.text)
     data_url = code[list(code)[-1]]['url']
     with open(data_path + '/dxx_answer.json', 'r', encoding='utf-8') as f:
@@ -163,8 +163,8 @@ async def crawl_answer():
         url = item['url']
         dxx_url_list.append(url)
     if data_url not in dxx_url_list:
-        async with AsyncClient(headers=headers) as client:
-            resp = await client.get(data_url, timeout=10)
+        async with AsyncClient(headers=headers, max_redirects=5) as client:
+            resp = await client.get(url=data_url, timeout=10)
         resp.encoding = 'utf-8'
         soup = BeautifulSoup(resp.text, 'lxml')
         title = soup.find('title').text[7:].strip()

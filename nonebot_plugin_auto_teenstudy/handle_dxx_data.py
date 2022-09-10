@@ -105,7 +105,7 @@ class HandleDxx:
                             }
                             return data
                     elif option == 'cookie':
-                        if item['area'] == '山东':
+                        if item['area'] == '山东' or item['area'] == '江苏' or item['area'] == '辽宁' or item['area']=='上海':
                             item['cookie'] = info
                             with open(path + '/dxx_list.json', 'w', encoding='utf-8') as w:
                                 json.dump(obj, w, indent=4, ensure_ascii=False)
@@ -125,7 +125,7 @@ class HandleDxx:
                         with open(path + '/dxx_list.json', 'w', encoding='utf-8') as w:
                             json.dump(obj, w, indent=4, ensure_ascii=False)
                         data = {
-                            "msg": f"\n青年大学习团支书QQ聊更改成功！\n",
+                            "msg": f"\n青年大学习团支书QQ更改成功！\n",
                             'status': 200
                         }
                         return data
@@ -261,7 +261,7 @@ class HandleDxx:
                     dxx_name = item['dxx_name']
                     commit_time = item['commit_time']
                     data = {
-                        'msg': f'大学习用户信息查询成功!\n用户信息\n姓名：{name}\nQQ号:{qq}\n团支书QQ:{leader}\n通知群号：{group}\n地区：{area}\nopenid:{openid}\nuid:{uid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n自动提交大学习状态：{status}\n自动提交大学习通知方式：{way}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                        'msg': f'大学习用户信息查询成功!\n用户信息\n姓名：{name}\nQQ号：{qq}\n团支书QQ：{leader}\n通知群号：{group}\n地区：{area}\nopenid：{openid}\nuid：{uid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n自动提交大学习状态：{status}\n自动提交大学习通知方式：{way}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
                         'status': 200
                     }
                     return data
@@ -405,7 +405,7 @@ class HandleDxx:
                     dxx_name = item['dxx_name']
                     commit_time = item['commit_time']
                     data = {
-                        'msg': f'大学习用户信息查询成功!\n用户信息\n姓名：{name}\nQQ号:{qq}\n团支书QQ:{leader}\n通知群号：{group}\n地区：{area}\nopenid:{openid}\nnid:{nid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n自动提交大学习状态：{status}\n自动提交大学习通知方式：{way}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                        'msg': f'大学习用户信息查询成功!\n用户信息\n姓名：{name}\nQQ号：{qq}\n团支书QQ:{leader}\n通知群号：{group}\n地区：{area}\nopenid：{openid}\nnid：{nid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n自动提交大学习状态：{status}\n自动提交大学习通知方式：{way}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
                         'status': 200
                     }
                     return data
@@ -489,13 +489,13 @@ class HandleDxx:
                         dxx_name = list(answer_obj)[-1]["catalogue"]
                         commit_time = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
                         data = {
-                            'msg': f'大学习用户信息设置成功!\n提交最新一期大学习成功！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid:{openid}\nnid:{nid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                            'msg': f'大学习用户信息设置成功!\n提交最新一期大学习成功！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid：{openid}\nnid：{nid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
                             'status': 200
                         }
                         return data
                     elif status == 503:
                         data = {
-                            'msg': f'大学习用户信息设置成功!\n提交最新一期大学习失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid:{openid}\nnid:{nid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}',
+                            'msg': f'大学习用户信息设置成功!\n提交最新一期大学习失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号：{send_id}\n地区：{area}\nopenid：{openid}\nnid：{nid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}',
                             'status': 503
                         }
                         return data
@@ -549,7 +549,7 @@ class HandleDxx:
                     dxx_name = item['dxx_name']
                     commit_time = item['commit_time']
                     data = {
-                        'msg': f'大学习用户信息查询成功!\n用户信息\n姓名：{name}\nQQ号:{qq}\n团支书QQ:{leader}\n通知群号：{group}\n地区：{area}\nopenid:{openid}\nnid:{nid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n自动提交大学习状态：{status}\n自动提交大学习通知方式：{way}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                        'msg': f'大学习用户信息查询成功!\n用户信息\n姓名：{name}\nQQ号：{qq}\n团支书QQ：{leader}\n通知群号：{group}\n地区：{area}\nopenid：{openid}\nnid：{nid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n自动提交大学习状态：{status}\n自动提交大学习通知方式：{way}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
                         'status': 200
                     }
                     return data
@@ -620,6 +620,7 @@ class HandleDxx:
                     'area': area,
                     'leader': leader,
                     'name': username,
+                    'token': token,
                     'gender': gender,
                     'mobile': mobile,
                     'level1': level1,
@@ -641,7 +642,7 @@ class HandleDxx:
                     dxx_name = list(answer_obj)[-1]["catalogue"]
                     commit_time = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
                     data = {
-                        'msg': f'大学习用户信息设置成功!\n提交最新一期大学习成功！\n用户信息\n姓名：{username}\nQQ号:{send_id}\n地区：{area}\ntoken:{token}\n学校：{level2}\n学院：{level3}\n班级(团支部)：{level4}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                        'msg': f'大学习用户信息设置成功!\n提交最新一期大学习成功！\n用户信息\n姓名：{username}\nQQ号：{send_id}\n地区：{area}\ntoken：{token}\n学校：{level2}\n学院：{level3}\n班级(团支部)：{level4}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
                         'status': 200
                     }
                     return data
@@ -698,7 +699,7 @@ class HandleDxx:
                     dxx_name = item['dxx_name']
                     commit_time = item['commit_time']
                     data = {
-                        'msg': f'大学习用户信息查询成功!\n用户信息\n姓名：{username}\nQQ号:{qq}\n团支书QQ:{leader}\n通知群号：{group}\n地区：{area}\n手机号：{mobile}\ntoken:{token}\n学校类型：{level1}\n学校：{level2}\n学院：{level3}\n班级(团支部)：{level4}\n自动提交大学习状态：{status}\n自动提交大学习通知方式：{way}n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                        'msg': f'大学习用户信息查询成功!\n用户信息\n姓名：{username}\nQQ号:{qq}\n团支书QQ：{leader}\n通知群号：{group}\n地区：{area}\n手机号：{mobile}\ntoken：{token}\n学校类型：{level1}\n学校：{level2}\n学院：{level3}\n班级(团支部)：{level4}\n自动提交大学习状态：{status}\n自动提交大学习通知方式：{way}n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
                         'status': 200
                     }
                     return data
@@ -925,13 +926,13 @@ class HandleDxx:
                     dxx_name = list(answer_obj)[-1]["catalogue"]
                     commit_time = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
                     data = {
-                        'msg': f'大学习用户信息设置成功!\n提交最新一期大学习成功！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\ntoken:{token}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                        'msg': f'大学习用户信息设置成功!\n提交最新一期大学习成功！\n用户信息\n姓名：{name}\nQQ号：{send_id}\n地区：{area}\ntoken：{token}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
                         'status': 200
                     }
                     return data
                 elif status == 503:
                     data = {
-                        'msg': f'大学习用户信息设置成功!\n提交最新一期大学习失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\ntoken:{token}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}',
+                        'msg': f'大学习用户信息设置成功!\n提交最新一期大学习失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号：{send_id}\n地区：{area}\ntoken：{token}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}',
                         'status': 503
                     }
                     return data
@@ -979,7 +980,518 @@ class HandleDxx:
                     dxx_name = item['dxx_name']
                     commit_time = item['commit_time']
                     data = {
-                        'msg': f'大学习用户信息查询成功!\n用户信息\n姓名：{name}\nQQ号:{qq}\n团支书QQ:{leader}\n通知群号：{group}\n地区：{area}\n手机号：{tel}\ntoken:{token}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n自动提交大学习状态：{status}\n自动提交大学习通知方式：{way}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                        'msg': f'大学习用户信息查询成功!\n用户信息\n姓名：{name}\nQQ号：{qq}\n团支书QQ：{leader}\n通知群号：{group}\n地区：{area}\n手机号：{tel}\ntoken：{token}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n自动提交大学习状态：{status}\n自动提交大学习通知方式：{way}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                        'status': 200
+                    }
+                    return data
+            if not mark:
+                data = {
+                    'msg': '大学习用户信息查询失败！\n用户信息不存在！\n添加用户信息指令：添加大学习',
+                    'status': 503
+                }
+                return data
+        except Exception as result:
+            data = {
+                'status': 404,
+                'msg': f'{result}'
+            }
+            return data
+
+    # 处理河南地区用户数据
+    @staticmethod
+    async def set_henan(send_id, event):
+        try:
+            with open(path + '/dxx_list.json', 'r', encoding='utf-8') as r:
+                data_json = json.load(r)
+            id_mark = False
+            for item in data_json:
+                if int(item['qq']) == int(send_id):
+                    name = item['name']
+                    qq = item['qq']
+                    data = {
+                        'msg': f'设置失败！{name}({qq})信息存在！',
+                        'status': 404
+                    }
+                    return data
+            if not id_mark:
+                content_json = json.loads(event.split('#')[-1])
+                qq = int(send_id)
+                group = ''
+                auto_commit = {
+                    "status": False,
+                    "way": "private",
+                    "send_qq": qq,
+                    "send_group": group
+                }
+                leader = ''
+                area = event.split('#')[-2]
+                name = content_json['name']
+                openid = content_json['openid']
+                cookie = content_json['cookie']
+                class_name = content_json['class_name']
+                university = content_json['university']
+                college = content_json['college']
+                write_data = {
+                    'qq': qq,
+                    'auto_commit': auto_commit,
+                    'area': area,
+                    'leader': leader,
+                    'name': name,
+                    'openid': openid,
+                    'cookie': cookie,
+                    'university': university,
+                    'college': college,
+                    'class_name': class_name,
+                    'dxx_name': '',
+                    'commit_time': ''
+                }
+                data_json.append(write_data)
+                with open(path + '/dxx_list.json', 'w', encoding='utf-8') as f:
+                    json.dump(data_json, f, indent=4, ensure_ascii=False)
+                content = await AutoDxx.auto_henan(send_id)
+                status = content['status']
+                if status == 200:
+                    with open(path + '/dxx_answer.json', 'r', encoding='utf-8') as a:
+                        answer_obj = json.load(a)
+                    dxx_name = list(answer_obj)[-1]["catalogue"]
+                    commit_time = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
+                    data = {
+                        'msg': f'大学习用户信息设置成功!\n提交最新一期大学习成功！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid:{openid}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                        'status': 200
+                    }
+                    return data
+                elif status == 503:
+                    data = {
+                        'msg': f'大学习用户信息设置成功!\n提交最新一期大学习失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid:{openid}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}',
+                        'status': 503
+                    }
+                    return data
+                else:
+                    data = {
+                        'msg': f"出错了\n错误信息：{content['error']}",
+                        'status': 404
+                    }
+                    return data
+        except Exception as result:
+            data = {
+                'status': 404,
+                'msg': f'{result}'
+            }
+            return data
+
+    @staticmethod
+    async def check_henan(send_id):
+        try:
+            with open(path + '/dxx_list.json', 'r', encoding='utf-8') as r:
+                obj = json.load(r)
+            mark = False
+            for item in obj:
+                if int(send_id) == int(item['qq']):
+                    qq = int(item['qq'])
+                    group = item['auto_commit']['send_group']
+                    status = item['auto_commit']['status']
+                    way = item['auto_commit']['way']
+                    if way == "group":
+                        way = "群聊"
+                    else:
+                        way = "私聊"
+                    if status:
+                        status = '开启'
+                    else:
+                        status = '关闭'
+                    leader = item['leader']
+                    name = item['name']
+                    area = item['area']
+                    openid = item['openid'],
+                    cookie = item['cookie']
+                    university = item['university']
+                    college = item['college']
+                    class_name = item['class_name']
+                    dxx_name = item['dxx_name']
+                    commit_time = item['commit_time']
+                    data = {
+                        'msg': f'大学习用户信息查询成功!\n用户信息\n姓名：{name}\nQQ号：{qq}\n团支书QQ：{leader}\n通知群号：{group}\n地区：{area}\nopenid：{openid}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n自动提交大学习状态：{status}\n自动提交大学习通知方式：{way}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                        'status': 200
+                    }
+                    return data
+            if not mark:
+                data = {
+                    'msg': '大学习用户信息查询失败！\n用户信息不存在！\n添加用户信息指令：添加大学习',
+                    'status': 503
+                }
+                return data
+        except Exception as result:
+            data = {
+                'status': 404,
+                'msg': f'{result}'
+            }
+            return data
+
+    # 处理江苏地区用户数据
+    @staticmethod
+    async def set_jiangsu(send_id, event):
+        try:
+            with open(path + '/dxx_list.json', 'r', encoding='utf-8') as r:
+                data_json = json.load(r)
+            id_mark = False
+            for item in data_json:
+                if int(item['qq']) == int(send_id):
+                    name = item['name']
+                    qq = item['qq']
+                    data = {
+                        'msg': f'设置失败！{name}({qq})信息存在！',
+                        'status': 404
+                    }
+                    return data
+            if not id_mark:
+                content_json = json.loads(event.split('#')[-1])
+                qq = int(send_id)
+                group = ''
+                auto_commit = {
+                    "status": False,
+                    "way": "private",
+                    "send_qq": qq,
+                    "send_group": group
+                }
+                leader = ''
+                area = event.split('#')[-2]
+                name = content_json['name']
+                cookie = content_json['cookie']
+                class_name = content_json['class_name']
+                university = content_json['university']
+                college = content_json['college']
+                write_data = {
+                    'qq': qq,
+                    'auto_commit': auto_commit,
+                    'area': area,
+                    'leader': leader,
+                    'name': name,
+                    'cookie': cookie,
+                    'university': university,
+                    'college': college,
+                    'class_name': class_name,
+                    'dxx_name': '',
+                    'commit_time': ''
+                }
+                data_json.append(write_data)
+                with open(path + '/dxx_list.json', 'w', encoding='utf-8') as f:
+                    json.dump(data_json, f, indent=4, ensure_ascii=False)
+                content = await AutoDxx.auto_jiangsu(send_id)
+                status = content['status']
+                if status == 200:
+                    with open(path + '/dxx_answer.json', 'r', encoding='utf-8') as a:
+                        answer_obj = json.load(a)
+                    dxx_name = list(answer_obj)[-1]["catalogue"]
+                    commit_time = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
+                    data = {
+                        'msg': f'大学习用户信息设置成功!\n提交最新一期大学习成功！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                        'status': 200
+                    }
+                    return data
+                elif status == 503:
+                    data = {
+                        'msg': f'大学习用户信息设置成功!\n提交最新一期大学习失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}',
+                        'status': 503
+                    }
+                    return data
+                else:
+                    data = {
+                        'msg': f"出错了\n错误信息：{content['error']}",
+                        'status': 404
+                    }
+                    return data
+        except Exception as result:
+            data = {
+                'status': 404,
+                'msg': f'{result}'
+            }
+            return data
+
+    @staticmethod
+    async def check_jiangsu(send_id):
+        try:
+            with open(path + '/dxx_list.json', 'r', encoding='utf-8') as r:
+                obj = json.load(r)
+            mark = False
+            for item in obj:
+                if int(send_id) == int(item['qq']):
+                    qq = int(item['qq'])
+                    group = item['auto_commit']['send_group']
+                    status = item['auto_commit']['status']
+                    way = item['auto_commit']['way']
+                    if way == "group":
+                        way = "群聊"
+                    else:
+                        way = "私聊"
+                    if status:
+                        status = '开启'
+                    else:
+                        status = '关闭'
+                    leader = item['leader']
+                    name = item['name']
+                    area = item['area']
+                    cookie = item['cookie']
+                    university = item['university']
+                    college = item['college']
+                    class_name = item['class_name']
+                    dxx_name = item['dxx_name']
+                    commit_time = item['commit_time']
+                    data = {
+                        'msg': f'大学习用户信息查询成功!\n用户信息\n姓名：{name}\nQQ号：{qq}\n团支书QQ：{leader}\n通知群号：{group}\n地区：{area}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n自动提交大学习状态：{status}\n自动提交大学习通知方式：{way}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                        'status': 200
+                    }
+                    return data
+            if not mark:
+                data = {
+                    'msg': '大学习用户信息查询失败！\n用户信息不存在！\n添加用户信息指令：添加大学习',
+                    'status': 503
+                }
+                return data
+        except Exception as result:
+            data = {
+                'status': 404,
+                'msg': f'{result}'
+            }
+            return data
+
+    # 处理辽宁地区用户数据
+    @staticmethod
+    async def set_liaoning(send_id, event):
+        try:
+            with open(path + '/dxx_list.json', 'r', encoding='utf-8') as r:
+                data_json = json.load(r)
+            id_mark = False
+            for item in data_json:
+                if int(item['qq']) == int(send_id):
+                    name = item['name']
+                    qq = item['qq']
+                    data = {
+                        'msg': f'设置失败！{name}({qq})信息存在！',
+                        'status': 404
+                    }
+                    return data
+            if not id_mark:
+                content_json = json.loads(event.split('#')[-1])
+                qq = int(send_id)
+                group = ''
+                auto_commit = {
+                    "status": False,
+                    "way": "private",
+                    "send_qq": qq,
+                    "send_group": group
+                }
+                leader = ''
+                area = event.split('#')[-2]
+                name = content_json['name']
+                cookie = content_json['cookie']
+                class_name = content_json['class_name']
+                university = content_json['university']
+                college = content_json['college']
+                write_data = {
+                    'qq': qq,
+                    'auto_commit': auto_commit,
+                    'area': area,
+                    'leader': leader,
+                    'name': name,
+                    'cookie': cookie,
+                    'university': university,
+                    'college': college,
+                    'class_name': class_name,
+                    'dxx_name': '',
+                    'commit_time': ''
+                }
+                data_json.append(write_data)
+                with open(path + '/dxx_list.json', 'w', encoding='utf-8') as f:
+                    json.dump(data_json, f, indent=4, ensure_ascii=False)
+                content = await AutoDxx.auto_liaoning(send_id)
+                status = content['status']
+                if status == 200:
+                    with open(path + '/dxx_answer.json', 'r', encoding='utf-8') as a:
+                        answer_obj = json.load(a)
+                    dxx_name = list(answer_obj)[-1]["catalogue"]
+                    commit_time = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
+                    data = {
+                        'msg': f'大学习用户信息设置成功!\n提交最新一期大学习成功！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                        'status': 200
+                    }
+                    return data
+                elif status == 503:
+                    data = {
+                        'msg': f'大学习用户信息设置成功!\n提交最新一期大学习失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}',
+                        'status': 503
+                    }
+                    return data
+                else:
+                    data = {
+                        'msg': f"出错了\n错误信息：{content['error']}",
+                        'status': 404
+                    }
+                    return data
+        except Exception as result:
+            data = {
+                'status': 404,
+                'msg': f'{result}'
+            }
+            return data
+
+    @staticmethod
+    async def check_liaoning(send_id):
+        try:
+            with open(path + '/dxx_list.json', 'r', encoding='utf-8') as r:
+                obj = json.load(r)
+            mark = False
+            for item in obj:
+                if int(send_id) == int(item['qq']):
+                    qq = int(item['qq'])
+                    group = item['auto_commit']['send_group']
+                    status = item['auto_commit']['status']
+                    way = item['auto_commit']['way']
+                    if way == "group":
+                        way = "群聊"
+                    else:
+                        way = "私聊"
+                    if status:
+                        status = '开启'
+                    else:
+                        status = '关闭'
+                    leader = item['leader']
+                    name = item['name']
+                    area = item['area']
+                    cookie = item['cookie']
+                    university = item['university']
+                    college = item['college']
+                    class_name = item['class_name']
+                    dxx_name = item['dxx_name']
+                    commit_time = item['commit_time']
+                    data = {
+                        'msg': f'大学习用户信息查询成功!\n用户信息\n姓名：{name}\nQQ号：{qq}\n团支书QQ：{leader}\n通知群号：{group}\n地区：{area}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n自动提交大学习状态：{status}\n自动提交大学习通知方式：{way}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                        'status': 200
+                    }
+                    return data
+            if not mark:
+                data = {
+                    'msg': '大学习用户信息查询失败！\n用户信息不存在！\n添加用户信息指令：添加大学习',
+                    'status': 503
+                }
+                return data
+        except Exception as result:
+            data = {
+                'status': 404,
+                'msg': f'{result}'
+            }
+            return data
+
+    # 处理上海地区用户数据
+    @staticmethod
+    async def set_shanghai(send_id, event):
+        try:
+            with open(path + '/dxx_list.json', 'r', encoding='utf-8') as r:
+                data_json = json.load(r)
+            id_mark = False
+            for item in data_json:
+                if int(item['qq']) == int(send_id):
+                    name = item['name']
+                    qq = item['qq']
+                    data = {
+                        'msg': f'设置失败！{name}({qq})信息存在！',
+                        'status': 404
+                    }
+                    return data
+            if not id_mark:
+                qq = int(send_id)
+                group = ''
+                auto_commit = {
+                    "status": False,
+                    "way": "private",
+                    "send_qq": qq,
+                    "send_group": group
+                }
+                content_json = json.loads(event.split('#')[-1])
+                leader = ''
+                area = event.split('#')[-2]
+                name = content_json['name']
+                university = content_json['university']
+                college = content_json['college']
+                class_name = content_json['class_name']
+                accessToken = content_json['accessToken']
+                cookie = content_json['cookie']
+                nid = content_json['nid']
+                write_data = {
+                    'qq': qq,
+                    'auto_commit': auto_commit,
+                    'area': area,
+                    'leader': leader,
+                    'name': name,
+                    'accessToken': accessToken,
+                    'cookie': cookie,
+                    'nid': nid,
+                    'university': university,
+                    'college': college,
+                    'class_name': class_name,
+                    'dxx_name': '',
+                    'commit_time': ''
+                }
+                data_json.append(write_data)
+                with open(path + '/dxx_list.json', 'w', encoding='utf-8') as f:
+                    json.dump(data_json, f, indent=4, ensure_ascii=False)
+                content = await AutoDxx.auto_shanghai(send_id)
+                status = content['status']
+                if status == 200:
+                    with open(path + '/dxx_answer.json', 'r', encoding='utf-8') as a:
+                        answer_obj = json.load(a)
+                    dxx_name = list(answer_obj)[-1]["catalogue"]
+                    commit_time = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
+                    data = {
+                        'msg': f'大学习用户信息设置成功!\n提交最新一期大学习成功！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\naccessToken：{accessToken}\ncookie：{cookie}\nnid：{nid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                        'status': 200
+                    }
+                    return data
+                elif status == 503:
+                    data = {
+                        'msg': f'大学习用户信息设置成功!\n提交最新一期大学习失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\naccessToken：{accessToken}\ncookie：{cookie}\nnid：{nid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}',
+                        'status': 503
+                    }
+                    return data
+        except Exception as result:
+            data = {
+                'status': 404,
+                'msg': f'{result}'
+            }
+            return data
+
+    @staticmethod
+    async def check_shanghai(send_id):
+        try:
+            with open(path + '/dxx_list.json', 'r', encoding='utf-8') as r:
+                obj = json.load(r)
+            mark = False
+            for item in obj:
+                if int(send_id) == int(item['qq']):
+                    qq = int(item['qq'])
+                    group = item['auto_commit']['send_group']
+                    status = item['auto_commit']['status']
+                    way = item['auto_commit']['way']
+                    if way == "group":
+                        way = "群聊"
+                    else:
+                        way = "私聊"
+                    if status:
+                        status = '开启'
+                    else:
+                        status = '关闭'
+                    leader = item['leader']
+                    name = item['name']
+                    area = item['area']
+                    accessToken=item['accessToken']
+                    cookie=item['cookie']
+                    nid = item['nid']
+                    university = item['university']
+                    college = item['college']
+                    class_name = item['class_name']
+                    dxx_name = item['dxx_name']
+                    commit_time = item['commit_time']
+                    data = {
+                        'msg': f'大学习用户信息查询成功!\n用户信息\n姓名：{name}\nQQ号：{qq}\n团支书QQ:{leader}\n通知群号：{group}\n地区：{area}\naccessToken：{accessToken}\ncookie：{cookie}\nnid：{nid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n自动提交大学习状态：{status}\n自动提交大学习通知方式：{way}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
                         'status': 200
                     }
                     return data

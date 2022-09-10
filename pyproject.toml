@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nonebot_plugin_auto_teenstudy"
-version = "0.1.3"
+version = "0.1.4"
 description = "基于nonebot异步框架的青年大学自动提交插件"
 authors = ["ZM25XC <2393899036@qq.com>"]
 license="MIT"
