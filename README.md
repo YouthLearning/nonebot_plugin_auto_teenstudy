@@ -12,6 +12,10 @@
      <a href="https://github.com/ZM25XC/nonebot_plugin_auto_teenstudy">
     <img src="https://visitor-badge.glitch.me/badge?page_id=https://github.com/ZM25XC/nonebot_plugin_auto_teenstudy" alt="nonebot_plugin_auto_teenstudy"></a>
 		<a href="https://github.com/ZM25XC/nonebot_plugin_auto_teenstudy/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/ZM25XC/nonebot_plugin_auto_teenstudy?style=flat-square"></a>
+  </div>
+
+
+
 
 
 * [各地区使用方式](#各地区使用方式（已经支持地区）)
@@ -22,7 +26,7 @@
 * [功能列表](#功能列表)
 * [提醒](#提醒)
 * [说明](#说明)
-* [To Do](#To Do)
+* [ToDo](#ToDo)
 * [更新日志](#更新日志)
 
 
@@ -104,6 +108,9 @@
 |     一键提醒      |           一键提醒            |      插件主人（团支书）指令，提醒未完成大学习成员完成大学习（维护中，暂不开放）       |
 |     一键查询      |           一键查询            |         插件主人（团支书）指令，查询大学习完成情况（维护中，暂不开放）          |
 
+
+
+
 ## 提醒
 
 - 需要cookie(token)的地区，抓取到cookie(token)后，请尽量别点进官方公众号，以免cookie(token)刷新
@@ -117,7 +124,7 @@
 - 时间精力有限，目前只维护湖北和江西两个地区，其他地区出问题请提交Issues,我找个时间修，需要增加地区可以提交Pull requests
 - 觉得项目不错，不妨点个stars.
 
-## To Do
+## ToDo
 
 - [ ] 开发公众号统一推送
 - [ ] 增加ip池，防止多次用同一ip导致封ip
