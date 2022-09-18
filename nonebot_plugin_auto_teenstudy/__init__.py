@@ -54,7 +54,7 @@ dxx = on_command('提交大学习', aliases={'sub_dxx'}, priority=5)
 
 @dxx.handle()
 async def dxx(event: Event):
-    send_id = event.get_user_id()
+    send_id = int(event.get_user_id())
     try:
         mark = False
         with open(path + '/dxx_list.json', 'r', encoding='utf-8') as f:
@@ -90,6 +90,12 @@ async def dxx(event: Event):
                     status = content['status']
                 elif item['area'] == '上海':
                     content = await AutoDxx.auto_shanghai(send_id)
+                    status = content['status']
+                elif item['area'] == '吉林':
+                    content = await AutoDxx.auto_jilin(send_id)
+                    status = content['status']
+                elif item['area'] == '重庆':
+                    content = await AutoDxx.auto_chongqing(send_id)
                     status = content['status']
                 else:
                     content = {
@@ -136,7 +142,7 @@ async def dxx(event: Event):
                                                      event=event)
                         return None
                     else:
-                        await nonebot.get_bot().send(user_id=send_id, message=message, event=event, at_sender=True)
+                        await nonebot.get_bot().send(user_id=send_id, message=MessageSegment.text(message), event=event, at_sender=True)
                         return None
 
         if not mark:
@@ -213,6 +219,12 @@ async def set_dxx(event: Event):
                 status = content['status']
             elif area == '上海':
                 content = await HandleDxx.set_shanghai(send_id=send_id, event=str(event.get_message()))
+                status = content['status']
+            elif area == '吉林':
+                content = await HandleDxx.set_jilin(send_id=send_id, event=str(event.get_message()))
+                status = content['status']
+            elif area == '重庆':
+                content = await HandleDxx.set_chongqing(send_id=send_id, event=str(event.get_message()))
                 status = content['status']
             else:
                 content = {
@@ -346,6 +358,12 @@ async def add_dxx(event: Event):
             elif area == '上海':
                 content = await HandleDxx.set_shanghai(send_id=qq, event=str(event.get_message()))
                 status = content['status']
+            elif area == '吉林':
+                content = await HandleDxx.set_jilin(send_id=qq, event=str(event.get_message()))
+                status = content['status']
+            elif area == '重庆':
+                content = await HandleDxx.set_chongqing(send_id=qq, event=str(event.get_message()))
+                status = content['status']
             else:
                 content = {
                     "msg": '设置失败！该地区暂未支持！',
@@ -363,7 +381,7 @@ async def add_dxx(event: Event):
                                              event=event)
                 return None
     except Exception as e:
-        message = f'设置失败！您指令输入有误！\n正确指令格式：设置大学习配置#地区#姓名#学校名称#团委名称#班级\nps:班级名称一定要输入正确，不清楚请使用指令：查组织'
+        message = f'设置失败！您指令输入有误！'
         logger.error(f"{datetime.now()}: 错误信息：{e}")
         if pic_msg:
             pict = await pic(message)
@@ -453,6 +471,12 @@ async def check_dxx_user(event: Event):
                     status = content['status']
                 elif area == '上海':
                     content = await HandleDxx.check_shanghai(send_id=check_id)
+                    status = content['status']
+                elif area == '吉林':
+                    content = await HandleDxx.check_jilin(send_id=check_id)
+                    status = content['status']
+                elif area == '重庆':
+                    content = await HandleDxx.check_chongqing(send_id=check_id)
                     status = content['status']
                 else:
                     status = 404
@@ -562,6 +586,12 @@ async def my_dxx(event: Event):
                     status = content['status']
                 elif area == '上海':
                     content = await HandleDxx.check_shanghai(send_id=check_id)
+                    status = content['status']
+                elif area == '吉林':
+                    content = await HandleDxx.check_jilin(send_id=check_id)
+                    status = content['status']
+                elif area == '重庆':
+                    content = await HandleDxx.check_chongqing(send_id=check_id)
                     status = content['status']
                 else:
                     status = 404
@@ -710,14 +740,14 @@ finish_dxx = on_command('完成大学习', aliases={'finish_dxx'}, priority=5)
 
 @finish_dxx.handle()
 async def finish_dxx(event: Event):
-    send_id = event.get_user_id()
-    finish_id = str(event.get_message()).split('#')[-1]
+    send_id = int(event.get_user_id())
+    finish_id = int(str(event.get_message()).split('#')[-1])
     try:
         mark = False
         with open(path + '/dxx_list.json', 'r', encoding='utf-8') as f:
             obj = json.load(f)
         for item in obj:
-            if send_id in super_id or int(item['leader']) == int(send_id):
+            if send_id in super_id or str(item['leader']) == str(send_id):
                 if int(finish_id) == int(item['qq']):
                     if item['area'] == '湖北':
                         content = await AutoDxx.auto_hubei(finish_id)
@@ -748,6 +778,12 @@ async def finish_dxx(event: Event):
                         status = content['status']
                     elif item['area'] == '上海':
                         content = await AutoDxx.auto_shanghai(finish_id)
+                        status = content['status']
+                    elif item['area'] == '吉林':
+                        content = await AutoDxx.auto_jilin(finish_id)
+                        status = content['status']
+                    elif item['area'] == '重庆':
+                        content = await AutoDxx.auto_chongqing(finish_id)
                         status = content['status']
                     else:
                         content = {
@@ -787,17 +823,17 @@ async def finish_dxx(event: Event):
                         else:
                             await nonebot.get_bot().send(user_id=send_id, message=message, event=event, at_sender=True)
                             return None
-            else:
-                message = "无权限！"
-                if pic_msg:
-                    pict = await pic(message)
-                    await nonebot.get_bot().send(user_id=send_id, message=MessageSegment.image(pict),
-                                                 at_sender=True,
-                                                 event=event)
-                    return None
-                else:
-                    await nonebot.get_bot().send(user_id=send_id, message=message, event=event, at_sender=True)
-                    return None
+            # else:
+            #     message = "无权限！"
+            #     if pic_msg:
+            #         pict = await pic(message)
+            #         await nonebot.get_bot().send(user_id=send_id, message=MessageSegment.image(pict),
+            #                                      at_sender=True,
+            #                                      event=event)
+            #         return None
+            #     else:
+            #         await nonebot.get_bot().send(user_id=send_id, message=message, event=event, at_sender=True)
+            #         return None
         if not mark:
             message = '用户数据不存在，请先配置用户文件！'
             if pic_msg:
@@ -919,31 +955,31 @@ async def remind():
                 end_img = await get_end_pic()
                 title = content['catalogue']
                 stat_time = content['time']
-                message = f'本周的大学习开始喽!\n{title}\n开始时间：{stat_time}\n答案见图一\n完成截图见图二\nPs:当各地区大学习更新以后，可使用 提交大学习 指令完成大学习！'
+                message = f'\n本周的大学习开始喽!\n{title}\n开始时间：{stat_time}\n答案见图一\n完成截图见图二\nPs:当各地区大学习更新以后，可使用 提交大学习 指令完成大学习！'
                 with open(path + '/dxx_push_list.json', 'r', encoding='utf-8') as f:
                     obj = json.load(f)
                 for qq in obj['qq_list']:
                     await nonebot.get_bot().send_private_msg(user_id=qq, message=MessageSegment.text(
                         message) + MessageSegment.image(answer_img) + MessageSegment.image(end_img))
-                    await asyncio.sleep(random.randint(2, 5))
+                    await asyncio.sleep(random.randint(20, 30))
                 for group in obj['group_list']:
-                    await nonebot.get_bot().send_group_msg(group_id=group, message=MessageSegment.text(
+                    await nonebot.get_bot().send_group_msg(group_id=group, message=MessageSegment.at("all")+MessageSegment.text(
                         message) + MessageSegment.image(answer_img) + MessageSegment.image(end_img))
-                    await asyncio.sleep(random.randint(2, 5))
+                    await asyncio.sleep(random.randint(20, 30))
                 return None
             else:
                 num += 1
                 await asyncio.sleep(90)
             if num >= 140:
-                message = '本周没有大学习！'
+                message = '\n本周没有大学习！'
                 with open(path + '/dxx_push_list.json', 'r', encoding='utf-8') as f:
                     obj = json.load(f)
                 for qq in obj['qq_list']:
                     await nonebot.get_bot().send_private_msg(user_id=qq, message=MessageSegment.text(message))
-                    await asyncio.sleep(random.randint(2, 5))
+                    await asyncio.sleep(random.randint(20, 30))
                 for group in obj['group_list']:
-                    await nonebot.get_bot().send_group_msg(group_id=group, message=MessageSegment.text(message))
-                    await asyncio.sleep(random.randint(2, 5))
+                    await nonebot.get_bot().send_group_msg(group_id=group, message=MessageSegment.at("all")+MessageSegment.text(message))
+                    await asyncio.sleep(random.randint(20, 30))
                 return None
     except Exception as e:
         for su in super_id:
@@ -967,7 +1003,7 @@ async def auto_dxx_commit():
                     auto_content = await AutoDxx.auto_dxx(int(item['qq']))
                     end_img = await get_end_pic()
                     if item['auto_commit']['way'] == 'private':
-                        message = '\n自动提交青年大学习结果\n' + auto_content['msg']
+                        message = '\n青年大学习自动提交结果\n' + auto_content['msg']
                         num += 1
                         if pic_msg:
                             pict = await pic(message)
@@ -980,13 +1016,13 @@ async def auto_dxx_commit():
                                                                          message) + MessageSegment.image(
                                                                          end_img))
                         if item['area'] == '湖北':
-                            own_pict = await get_own(item['qq'])
+                            own_pict = await get_own(int(item['qq']))
                             await nonebot.get_bot().send_private_msg(user_id=int(item['auto_commit']['send_qq']),
                                                                      message=MessageSegment.text(
                                                                          '个人信息截图') + MessageSegment.image(
                                                                          own_pict))
                     else:
-                        message = '\n自动提交青年大学习结果\n' + auto_content['msg']
+                        message = '\n青年大学习自动提交结果\n' + auto_content['msg']
                         num += 1
                         if pic_msg:
                             pict = await pic(message)
@@ -1011,7 +1047,7 @@ async def auto_dxx_commit():
                                                                            'send_qq'])) + MessageSegment.text(
                                                                        '个人信息截图') + MessageSegment.image(
                                                                        own_pict))
-                    await asyncio.sleep(random.randint(30, 120))
+                    await asyncio.sleep(random.randint(30, 90))
                 else:
                     continue
         message = f'大学习用户列表中有{num}名同学开启了自动提交功能\n当前全部执行完毕！'

@@ -11,6 +11,7 @@ import requests
 from httpx import AsyncClient
 from anti_useragent import UserAgent
 from bs4 import BeautifulSoup
+from nonebot.log import logger
 
 path = os.path.dirname(__file__) + '/data'
 
@@ -64,6 +65,14 @@ class AutoDxx:
                         content = await AutoDxx.auto_shanghai(send_id)
                         status = content['status']
                         return content
+                    elif item['area'] == '吉林':
+                        content = await AutoDxx.auto_jilin(send_id)
+                        status = content['status']
+                        return content
+                    elif item['area'] == '重庆':
+                        content = await AutoDxx.auto_chongqing(send_id)
+                        status = content['status']
+                        return content
                     else:
                         content = {
                             "msg": '该地区暂未支持！',
@@ -95,7 +104,7 @@ class AutoDxx:
             'Host': 'www.jxqingtuan.cn',
             'Origin': 'http://www.jxqingtuan.cn',
             'Referer': 'http://www.jxqingtuan.cn/html/h5_index.html?&accessToken=' + openid,
-            'User-Agent': UserAgent(platform="iphone").wechat,
+            'User-Agent': UserAgent(platform="iphone", min_version=1, max_version=5).wechat,
             'X-Requested-With': 'XMLHttpRequest'
         }
         return headers
@@ -127,7 +136,7 @@ class AutoDxx:
                     url = "http://www.jxqingtuan.cn/pub/vol/volClass/current"
                     headers = await AutoDxx.makeHeader(openid=openid)
                     async with AsyncClient(headers=headers) as client:
-                        course = await client.get(url)
+                        course = await client.get(url=url)
                     course.encoding = course.charset_encoding
                     if json.loads(course.text).get('status') == 200:
                         title = json.loads(course.text).get('result').get('title')
@@ -135,7 +144,7 @@ class AutoDxx:
                         resp_url = 'http://www.jxqingtuan.cn/pub/vol/volClass/join?accessToken='
                         data = {"course": coursejson, "nid": nid, "cardNo": name, "subOrg": suborg}
                         async with AsyncClient(headers=headers) as client:
-                            res = await client.post(url=resp_url, data=json.dumps(data))
+                            res = await client.post(url=resp_url, json=data)
                             res.encoding = res.charset_encoding
                         resp = json.loads(res.text)
                         if resp.get("status") == 200:
@@ -167,6 +176,7 @@ class AutoDxx:
                 }
                 return data
         except Exception as result:
+            logger.error(f"{datetime.datetime.now()}: 错误信息：{result}")
             data = {
                 "msg": result,
                 "status": 404
@@ -1055,6 +1065,153 @@ class AutoDxx:
                         data = {
                             'msg': f'\n青年大学习{dxx_name}提交失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
                             'status': 503
+                        }
+                        return data
+            if not mark:
+                data = {
+                    'msg': f'\n青年大学习{dxx_name}提交失败！\n用户信息不存在！\n添加用户信息指令：设置大学习配置',
+                    'status': 404
+                }
+                return data
+
+        except Exception as result:
+            data = {
+                "msg": result,
+                "status": 404
+            }
+            return data
+
+    # 吉青飞扬青年大学习提交
+    @staticmethod
+    async def auto_jilin(send_id):
+        with open(path + '/dxx_list.json', 'r', encoding='utf-8') as f:
+            obj = json.load(f)
+        try:
+            mark = False
+            with open(path + '/dxx_answer.json', 'r', encoding='utf-8') as a:
+                answer_obj = json.load(a)
+            dxx_name = list(answer_obj)[-1]["catalogue"]
+            commit_time = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
+            for item in obj:
+                if int(send_id) == int(item['qq']):
+                    qq = int(item['qq'])
+                    group = item['auto_commit']['send_group']
+                    leader = item['leader']
+                    name = item['name']
+                    area = item['area']
+                    openid = item['openid']
+                    student_id = item['student_id']
+                    university = item['university']
+                    college = item['college']
+                    class_name = item['class_name']
+                    headers = {
+                        "Host": "jqfy.jl54.org",
+                        "Connection": "keep-alive",
+                        "Upgrade-Insecure-Requests": "1",
+                        "User-Agent": "Mozilla/5.0 (Linux; Android 12; M2007J3SC Build/SKQ1.220303.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/3262 MMWEBSDK/20220204 Mobile Safari/537.36 MMWEBID/6170 MicroMessenger/8.0.20.2100(0x28001438) Process/toolsmp WeChat/arm32 Weixin NetType/WIFI Language/zh_CN ABI/arm64",
+                        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/wxpic,image/tpg,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+                        "X-Requested-With": "com.tencent.mm",
+                        "Accept-Encoding": "gzip, deflate",
+                        "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7"
+                    }
+                    url = f"http://jqfy.jl54.org/jltw/wechat/editStudyRecord/{student_id}"
+                    params = {
+                        "openid": openid
+                    }
+                    async with AsyncClient(headers=headers, max_redirects=5, timeout=30) as client:
+                        response = await client.post(url=url, data=params)
+                    response.encoding = response.charset_encoding
+                    if response.json()['code'] == '0001':
+                        item.update(dxx_name=dxx_name, commit_time=commit_time)
+                        msg = f'\n青年大学习{dxx_name}提交成功！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid：{openid}\nstudent_id：{student_id}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}'
+                        data = {
+                            'msg': msg,
+                            "status": 200
+                        }
+                        with open(path + '/dxx_list.json', 'w', encoding='utf-8') as w:
+                            json.dump(obj, w, indent=4, ensure_ascii=False)
+                        return data
+                    else:
+                        data = {
+                            'msg': f'\n青年大学习{dxx_name}提交失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid：{openid}\nstudent_id：{student_id}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                            'status': 503
+                        }
+                        return data
+            if not mark:
+                data = {
+                    'msg': f'\n青年大学习{dxx_name}提交失败！\n用户信息不存在！\n添加用户信息指令：设置大学习配置',
+                    'status': 404
+                }
+                return data
+
+        except Exception as result:
+            data = {
+                "msg": result,
+                "status": 404
+            }
+            return data
+
+    # 重庆共青团青年大学习提交
+    @staticmethod
+    async def auto_chongqing(send_id):
+        with open(path + '/dxx_list.json', 'r', encoding='utf-8') as f:
+            obj = json.load(f)
+        try:
+            mark = False
+            with open(path + '/dxx_answer.json', 'r', encoding='utf-8') as a:
+                answer_obj = json.load(a)
+            dxx_name = list(answer_obj)[-1]["catalogue"]
+            commit_time = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
+            for item in obj:
+                if int(send_id) == int(item['qq']):
+                    qq = int(item['qq'])
+                    group = item['auto_commit']['send_group']
+                    leader = item['leader']
+                    name = item['name']
+                    area = item['area']
+                    openid = item['openid']
+                    university = item['university']
+                    college = item['college']
+                    class_name = item['class_name']
+                    headers = {
+                        "Host": "stu.redrock.team",
+                        "Connection": "keep-alive",
+                        "Accept": "application/json, text/plain, */*",
+                        "User-Agent": "Mozilla/5.0 (Linux; Android 12; M2007J3SC Build/SKQ1.220303.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/3262 MMWEBSDK/20220204 Mobile Safari/537.36 MMWEBID/6170 MicroMessenger/8.0.20.2100(0x28001438) Process/toolsmp WeChat/arm32 Weixin NetType/WIFI Language/zh_CN ABI/arm64",
+                        "X-Requested-With": "com.tencent.mm",
+                        "Accept-Encoding": "gzip, deflate",
+                        "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7"
+                    }
+                    new_url = f"http://stu.redrock.team/new_course.json?time={int(time.time())}"
+                    async with AsyncClient(headers=headers, max_redirects=5, timeout=30) as client:
+                        response = await client.get(url=new_url)
+                    if response.status_code == 200:
+                        response.encoding = response.charset_encoding
+                        course_id = response.json()['data'][0]['id']
+                        commit_url = f"http://stu.redrock.team/api/course/studyCourse?openid={openid}&id={course_id}"
+                        async with AsyncClient(headers=headers, max_redirects=5, timeout=30) as client:
+                            response = await client.get(url=commit_url)
+                        response.encoding = response.charset_encoding
+                        if response.json()['status'] == 200 or response.json()['status'] == 201:
+                            item.update(dxx_name=dxx_name, commit_time=commit_time)
+                            msg = f'\n青年大学习{dxx_name}提交成功！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid：{openid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}'
+                            data = {
+                                'msg': msg,
+                                "status": 200
+                            }
+                            with open(path + '/dxx_list.json', 'w', encoding='utf-8') as w:
+                                json.dump(obj, w, indent=4, ensure_ascii=False)
+                            return data
+                        else:
+                            data = {
+                                'msg': f'\n青年大学习{dxx_name}提交失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid：{openid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                                'status': 503
+                            }
+                            return data
+                    else:
+                        data = {
+                            'msg': f'\n青年大学习{dxx_name}提交失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid：{openid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                            'status': 404
                         }
                         return data
             if not mark:
