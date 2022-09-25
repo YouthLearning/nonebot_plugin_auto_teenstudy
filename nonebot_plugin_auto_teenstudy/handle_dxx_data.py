@@ -73,7 +73,8 @@ class HandleDxx:
                         }
                         return data
                     elif option == 'openid':
-                        if item['area'] == '浙江' or item['area'] == '山东' or item['area'] == '吉林' or item['area']=='重庆':
+                        area_list = ['浙江', '山东', '吉林', '重庆', '贵州', '湖北']
+                        if item['area'] in area_list:
                             item['openid'] = info
                             with open(path + '/dxx_list.json', 'w', encoding='utf-8') as w:
                                 json.dump(obj, w, indent=4, ensure_ascii=False)
@@ -89,7 +90,8 @@ class HandleDxx:
                             }
                             return data
                     elif option == 'token':
-                        if item['area'] == '安徽' or item['area'] == '四川':
+                        area_list = ['安徽', '四川']
+                        if item['area'] in area_list:
                             item['token'] = info
                             with open(path + '/dxx_list.json', 'w', encoding='utf-8') as w:
                                 json.dump(obj, w, indent=4, ensure_ascii=False)
@@ -105,8 +107,8 @@ class HandleDxx:
                             }
                             return data
                     elif option == 'cookie':
-                        if item['area'] == '山东' or item['area'] == '江苏' or item['area'] == '辽宁' or item[
-                            'area'] == '上海':
+                        area_list = ['山东', '江苏', '辽宁', '上海']
+                        if item['area'] in area_list:
                             item['cookie'] = info
                             with open(path + '/dxx_list.json', 'w', encoding='utf-8') as w:
                                 json.dump(obj, w, indent=4, ensure_ascii=False)
@@ -1721,6 +1723,257 @@ class HandleDxx:
 
     @staticmethod
     async def check_chongqing(send_id):
+        try:
+            with open(path + '/dxx_list.json', 'r', encoding='utf-8') as r:
+                obj = json.load(r)
+            mark = False
+            for item in obj:
+                if int(send_id) == int(item['qq']):
+                    qq = int(item['qq'])
+                    group = item['auto_commit']['send_group']
+                    status = item['auto_commit']['status']
+                    way = item['auto_commit']['way']
+                    if way == "group":
+                        way = "群聊"
+                    else:
+                        way = "私聊"
+                    if status:
+                        status = '开启'
+                    else:
+                        status = '关闭'
+                    leader = item['leader']
+                    name = item['name']
+                    area = item['area']
+                    openid = item['openid']
+                    university = item['university']
+                    college = item['college']
+                    class_name = item['class_name']
+                    dxx_name = item['dxx_name']
+                    commit_time = item['commit_time']
+                    data = {
+                        'msg': f'大学习用户信息查询成功!\n用户信息\n姓名：{name}\nQQ号：{qq}\n团支书QQ：{leader}\n通知群号：{group}\n地区：{area}\nopenid：{openid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n自动提交大学习状态：{status}\n自动提交大学习通知方式：{way}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                        'status': 200
+                    }
+                    return data
+            if not mark:
+                data = {
+                    'msg': '大学习用户信息查询失败！\n用户信息不存在！\n添加用户信息指令：添加大学习',
+                    'status': 503
+                }
+                return data
+        except Exception as result:
+            data = {
+                'status': 404,
+                'msg': f'{result}'
+            }
+            return data
+
+    # 处理湖南地区用户数据
+    @staticmethod
+    async def set_hunan(send_id, event):
+        try:
+            with open(path + '/dxx_list.json', 'r', encoding='utf-8') as r:
+                data_json = json.load(r)
+            id_mark = False
+            for item in data_json:
+                if int(item['qq']) == int(send_id):
+                    name = item['name']
+                    qq = item['qq']
+                    data = {
+                        'msg': f'设置失败！{name}({qq})信息存在！',
+                        'status': 404
+                    }
+                    return data
+            if not id_mark:
+                content_json = json.loads(event.split('#')[-1])
+                qq = int(send_id)
+                group = ''
+                auto_commit = {
+                    "status": False,
+                    "way": "private",
+                    "send_qq": qq,
+                    "send_group": group
+                }
+                leader = ''
+                area = event.split('#')[-2]
+                name = content_json['name']
+                cookie = content_json['cookie']
+                class_name = content_json['class_name']
+                university = content_json['university']
+                college = content_json['college']
+                write_data = {
+                    'qq': qq,
+                    'auto_commit': auto_commit,
+                    'area': area,
+                    'leader': leader,
+                    'name': name,
+                    'cookie': cookie,
+                    'university': university,
+                    'college': college,
+                    'class_name': class_name,
+                    'dxx_name': '',
+                    'commit_time': ''
+                }
+                data_json.append(write_data)
+                with open(path + '/dxx_list.json', 'w', encoding='utf-8') as f:
+                    json.dump(data_json, f, indent=4, ensure_ascii=False)
+                content = await AutoDxx.auto_hunan(send_id)
+                status = content['status']
+                if status == 200:
+                    with open(path + '/dxx_answer.json', 'r', encoding='utf-8') as a:
+                        answer_obj = json.load(a)
+                    dxx_name = list(answer_obj)[-1]["catalogue"]
+                    commit_time = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
+                    data = {
+                        'msg': f'大学习用户信息设置成功!\n提交最新一期大学习成功！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                        'status': 200
+                    }
+                    return data
+                elif status == 503:
+                    data = {
+                        'msg': f'大学习用户信息设置成功!\n提交最新一期大学习失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}',
+                        'status': 503
+                    }
+                    return data
+                else:
+                    data = {
+                        'msg': f"出错了\n错误信息：{content['error']}",
+                        'status': 404
+                    }
+                    return data
+        except Exception as result:
+            data = {
+                'status': 404,
+                'msg': f'{result}'
+            }
+            return data
+
+    @staticmethod
+    async def check_hunan(send_id):
+        try:
+            with open(path + '/dxx_list.json', 'r', encoding='utf-8') as r:
+                obj = json.load(r)
+            mark = False
+            for item in obj:
+                if int(send_id) == int(item['qq']):
+                    qq = int(item['qq'])
+                    group = item['auto_commit']['send_group']
+                    status = item['auto_commit']['status']
+                    way = item['auto_commit']['way']
+                    if way == "group":
+                        way = "群聊"
+                    else:
+                        way = "私聊"
+                    if status:
+                        status = '开启'
+                    else:
+                        status = '关闭'
+                    leader = item['leader']
+                    name = item['name']
+                    area = item['area']
+                    cookie = item['cookie']
+                    university = item['university']
+                    college = item['college']
+                    class_name = item['class_name']
+                    dxx_name = item['dxx_name']
+                    commit_time = item['commit_time']
+                    data = {
+                        'msg': f'大学习用户信息查询成功!\n用户信息\n姓名：{name}\nQQ号：{qq}\n团支书QQ：{leader}\n通知群号：{group}\n地区：{area}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n自动提交大学习状态：{status}\n自动提交大学习通知方式：{way}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                        'status': 200
+                    }
+                    return data
+            if not mark:
+                data = {
+                    'msg': '大学习用户信息查询失败！\n用户信息不存在！\n添加用户信息指令：添加大学习',
+                    'status': 503
+                }
+                return data
+        except Exception as result:
+            data = {
+                'status': 404,
+                'msg': f'{result}'
+            }
+            return data
+
+    # 处理贵州地区用户数据
+    @staticmethod
+    async def set_guizhou(send_id, event):
+        try:
+            with open(path + '/dxx_list.json', 'r', encoding='utf-8') as r:
+                data_json = json.load(r)
+            id_mark = False
+            for item in data_json:
+                if int(item['qq']) == int(send_id):
+                    name = item['name']
+                    qq = item['qq']
+                    data = {
+                        'msg': f'设置失败！{name}({qq})信息存在！',
+                        'status': 404
+                    }
+                    return data
+            if not id_mark:
+                content_json = json.loads(event.split('#')[-1])
+                qq = int(send_id)
+                group = ''
+                auto_commit = {
+                    "status": False,
+                    "way": "private",
+                    "send_qq": qq,
+                    "send_group": group
+                }
+                leader = ''
+                area = event.split('#')[-2]
+                name = content_json['name']
+                university = content_json['university']
+                college = content_json['college']
+                class_name = content_json['class_name']
+                openid = content_json['openid']
+                write_data = {
+                    'qq': qq,
+                    'auto_commit': auto_commit,
+                    'area': area,
+                    'leader': leader,
+                    'name': name,
+                    'openid': openid,
+                    'dxx_name': '',
+                    'commit_time': ''
+                }
+                data_json.append(write_data)
+                with open(path + '/dxx_list.json', 'w', encoding='utf-8') as f:
+                    json.dump(data_json, f, indent=4, ensure_ascii=False)
+                content = await AutoDxx.auto_guizhou(send_id)
+                status = content['status']
+                if status == 200:
+                    with open(path + '/dxx_answer.json', 'r', encoding='utf-8') as a:
+                        answer_obj = json.load(a)
+                    dxx_name = list(answer_obj)[-1]["catalogue"]
+                    commit_time = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
+                    data = {
+                        'msg': f'大学习用户信息设置成功!\n提交最新一期大学习成功！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid：{openid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                        'status': 200
+                    }
+                    return data
+                elif status == 503:
+                    data = {
+                        'msg': f'大学习用户信息设置成功!\n提交最新一期大学习失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid：{openid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n',
+                        'status': 503
+                    }
+                    return data
+                else:
+                    data = {
+                        'msg': f"出错了\n错误信息：{content['error']}",
+                        'status': 404
+                    }
+                    return data
+        except Exception as result:
+            data = {
+                'status': 404,
+                'msg': f'{result}'
+            }
+            return data
+
+    @staticmethod
+    async def check_guizhou(send_id):
         try:
             with open(path + '/dxx_list.json', 'r', encoding='utf-8') as r:
                 obj = json.load(r)

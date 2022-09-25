@@ -35,18 +35,20 @@
 
 ## 各地区使用方式（已经支持地区）
 
-- [江西地区](./nonebot_plugin_auto_teenstudy/resource/江西地区.md)
-- [湖北地区](./nonebot_plugin_auto_teenstudy/resource/湖北地区.md)
-- [浙江地区](./nonebot_plugin_auto_teenstudy/resource/浙江地区.md)
-- [安徽地区](./nonebot_plugin_auto_teenstudy/resource/安徽地区.md)
-- [山东地区](./nonebot_plugin_auto_teenstudy/resource/山东地区.md)
-- [四川地区](./nonebot_plugin_auto_teenstudy/resource/四川地区.md)
-- [河南地区](./nonebot_plugin_auto_teenstudy/resource/河南地区.md)
-- [江苏地区](./nonebot_plugin_auto_teenstudy/resource/江苏地区.md)
-- [辽宁地区](./nonebot_plugin_auto_teenstudy/resource/辽宁地区.md)
-- [上海地区](./nonebot_plugin_auto_teenstudy/resource/上海地区.md)
-- [吉林地区](./nonebot_plugin_auto_teenstudy/resource/吉林地区.md)
-- [重庆地区](./nonebot_plugin_auto_teenstudy/resource/重庆地区.md)
+- [江西地区](./nonebot_plugin_auto_teenstudy/resource/area/江西地区.md)
+- [湖北地区](./nonebot_plugin_auto_teenstudy/resource/area/湖北地区.md)
+- [浙江地区](./nonebot_plugin_auto_teenstudy/resource/area/浙江地区.md)
+- [安徽地区](./nonebot_plugin_auto_teenstudy/resource/area/安徽地区.md)
+- [山东地区](./nonebot_plugin_auto_teenstudy/resource/area/山东地区.md)
+- [四川地区](./nonebot_plugin_auto_teenstudy/resource/area/四川地区.md)
+- [河南地区](./nonebot_plugin_auto_teenstudy/resource/area/河南地区.md)
+- [江苏地区](./nonebot_plugin_auto_teenstudy/resource/area/江苏地区.md)
+- [辽宁地区](./nonebot_plugin_auto_teenstudy/resource/area/辽宁地区.md)
+- [上海地区](./nonebot_plugin_auto_teenstudy/resource/area/上海地区.md)
+- [吉林地区](./nonebot_plugin_auto_teenstudy/resource/area/吉林地区.md)
+- [重庆地区](./nonebot_plugin_auto_teenstudy/resource/area/重庆地区.md)
+- [湖南地区](./nonebot_plugin_auto_teenstudy/resource/area/湖南地区.md)
+- [贵州地区](./nonebot_plugin_auto_teenstudy/resource/area/贵州地区.md)
 
 **其他地区努力适配中**
 
@@ -100,6 +102,18 @@
   ```py
   SUPERUSERS=[""]
   ```
+  
+- 在bot.py文件中添加定时配置
+
+    ```python
+    nonebot.init(apscheduler_autostart=True)
+    nonebot.init(apscheduler_config={
+        "apscheduler.timezone": "Asia/Shanghai"
+    })
+    ```
+
+    
+
 
 ## 功能列表
 |            指令            |                 指令格式                  |                             说明                             |
@@ -138,6 +152,9 @@
 
 ## 提醒
 
+- 本插件需要安装nonebot官方定时插件`pip install nonebot-plugin-apscheduler`
+- 本插件只适配高校，其他需要使用请前往另一仓库根据提交源码自行修改
+- 不会抓包请看参考
 - 需要cookie(token)的地区，抓取到cookie(token)后，请尽量别点进官方公众号，以免cookie(token)刷新
 - 绝大部分地区的学校、学院和团支部名称不涉及提交，仅作为定位和标记身份。
 - [各地区提交源码](https://github.com/ZM25XC/commit_dxx)
@@ -159,6 +176,14 @@
 - [ ] ~~逐步升级成群管插件~~
 
 ## 更新日志
+
+### 2022/09/25
+
+- 增加湖南地区
+- 增加贵州地区
+- 更新江西地区团支部数据，江西地区的小伙伴请务必更新下插件
+- 修复江西地区个人信息显示错误问题
+- 修改图片回复图片宽度为1920px
 
 ### 2022/09/18
 

@@ -97,6 +97,12 @@ async def dxx(event: Event):
                 elif item['area'] == '重庆':
                     content = await AutoDxx.auto_chongqing(send_id)
                     status = content['status']
+                elif item['area'] == '湖南':
+                    content = await AutoDxx.auto_hunan(send_id)
+                    status = content['status']
+                elif item['area'] == '贵州':
+                    content = await AutoDxx.auto_guizhou(send_id)
+                    status = content['status']
                 else:
                     content = {
                         "msg": '该地区暂未支持！',
@@ -225,6 +231,12 @@ async def set_dxx(event: Event):
                 status = content['status']
             elif area == '重庆':
                 content = await HandleDxx.set_chongqing(send_id=send_id, event=str(event.get_message()))
+                status = content['status']
+            elif area == '湖南':
+                content = await HandleDxx.set_hunan(send_id=send_id, event=str(event.get_message()))
+                status = content['status']
+            elif area == '贵州':
+                content = await HandleDxx.set_guizhou(send_id=send_id, event=str(event.get_message()))
                 status = content['status']
             else:
                 content = {
@@ -364,6 +376,12 @@ async def add_dxx(event: Event):
             elif area == '重庆':
                 content = await HandleDxx.set_chongqing(send_id=qq, event=str(event.get_message()))
                 status = content['status']
+            elif area == '湖南':
+                content = await HandleDxx.set_hunan(send_id=qq, event=str(event.get_message()))
+                status = content['status']
+            elif area == '贵州':
+                content = await HandleDxx.set_guizhou(send_id=qq, event=str(event.get_message()))
+                status = content['status']
             else:
                 content = {
                     "msg": '设置失败！该地区暂未支持！',
@@ -477,6 +495,12 @@ async def check_dxx_user(event: Event):
                     status = content['status']
                 elif area == '重庆':
                     content = await HandleDxx.check_chongqing(send_id=check_id)
+                    status = content['status']
+                elif area == '湖南':
+                    content = await HandleDxx.check_hunan(send_id=check_id)
+                    status = content['status']
+                elif area == '贵州':
+                    content = await HandleDxx.check_guizhou(send_id=check_id)
                     status = content['status']
                 else:
                     status = 404
@@ -592,6 +616,12 @@ async def my_dxx(event: Event):
                     status = content['status']
                 elif area == '重庆':
                     content = await HandleDxx.check_chongqing(send_id=check_id)
+                    status = content['status']
+                elif area == '湖南':
+                    content = await HandleDxx.check_hunan(send_id=check_id)
+                    status = content['status']
+                elif area == '贵州':
+                    content = await HandleDxx.check_guizhou(send_id=check_id)
                     status = content['status']
                 else:
                     status = 404
@@ -785,6 +815,12 @@ async def finish_dxx(event: Event):
                     elif item['area'] == '重庆':
                         content = await AutoDxx.auto_chongqing(finish_id)
                         status = content['status']
+                    elif item['area'] == '湖南':
+                        content = await AutoDxx.auto_hunan(finish_id)
+                        status = content['status']
+                    elif item['area'] == '贵州':
+                        content = await AutoDxx.auto_guizhou(finish_id)
+                        status = content['status']
                     else:
                         content = {
                             "msg": '该地区暂未支持！'
@@ -823,17 +859,17 @@ async def finish_dxx(event: Event):
                         else:
                             await nonebot.get_bot().send(user_id=send_id, message=message, event=event, at_sender=True)
                             return None
-            # else:
-            #     message = "无权限！"
-            #     if pic_msg:
-            #         pict = await pic(message)
-            #         await nonebot.get_bot().send(user_id=send_id, message=MessageSegment.image(pict),
-            #                                      at_sender=True,
-            #                                      event=event)
-            #         return None
-            #     else:
-            #         await nonebot.get_bot().send(user_id=send_id, message=message, event=event, at_sender=True)
-            #         return None
+            else:
+                message = "无权限！"
+                if pic_msg:
+                    pict = await pic(message)
+                    await nonebot.get_bot().send(user_id=send_id, message=MessageSegment.image(pict),
+                                                 at_sender=True,
+                                                 event=event)
+                    return None
+                else:
+                    await nonebot.get_bot().send(user_id=send_id, message=message, event=event, at_sender=True)
+                    return None
         if not mark:
             message = '用户数据不存在，请先配置用户文件！'
             if pic_msg:
@@ -1864,6 +1900,30 @@ async def all_submit(event: Event):
                     elif item['area'] == '山东':
                         content = await AutoDxx.auto_shandong(int(item['qq']))
                         status = content['status']
+                    elif item['area'] == '河南':
+                        content = await AutoDxx.auto_henan(int(item['qq']))
+                        status = content['status']
+                    elif item['area'] == '江苏':
+                        content = await AutoDxx.auto_jiangsu(int(item['qq']))
+                        status = content['status']
+                    elif item['area'] == '辽宁':
+                        content = await AutoDxx.auto_liaoning(int(item['qq']))
+                        status = content['status']
+                    elif item['area'] == '上海':
+                        content = await AutoDxx.auto_shanghai(int(item['qq']))
+                        status = content['status']
+                    elif item['area'] == '吉林':
+                        content = await AutoDxx.auto_jilin(int(item['qq']))
+                        status = content['status']
+                    elif item['area'] == '重庆':
+                        content = await AutoDxx.auto_chongqing(int(item['qq']))
+                        status = content['status']
+                    elif item['area'] == '湖南':
+                        content = await AutoDxx.auto_hunan(int(item['qq']))
+                        status = content['status']
+                    elif item['area'] == '贵州':
+                        content = await AutoDxx.auto_guizhou(int(item['qq']))
+                        status = content['status']
                     else:
                         content = {
                             "msg": '该地区暂未支持！',
@@ -1929,6 +1989,30 @@ async def all_submit(event: Event):
                         status = content['status']
                     elif item['area'] == '山东':
                         content = await AutoDxx.auto_shandong(int(item['qq']))
+                        status = content['status']
+                    elif item['area'] == '河南':
+                        content = await AutoDxx.auto_henan(int(item['qq']))
+                        status = content['status']
+                    elif item['area'] == '江苏':
+                        content = await AutoDxx.auto_jiangsu(int(item['qq']))
+                        status = content['status']
+                    elif item['area'] == '辽宁':
+                        content = await AutoDxx.auto_liaoning(int(item['qq']))
+                        status = content['status']
+                    elif item['area'] == '上海':
+                        content = await AutoDxx.auto_shanghai(int(item['qq']))
+                        status = content['status']
+                    elif item['area'] == '吉林':
+                        content = await AutoDxx.auto_jilin(int(item['qq']))
+                        status = content['status']
+                    elif item['area'] == '重庆':
+                        content = await AutoDxx.auto_chongqing(int(item['qq']))
+                        status = content['status']
+                    elif item['area'] == '湖南':
+                        content = await AutoDxx.auto_hunan(int(item['qq']))
+                        status = content['status']
+                    elif item['area'] == '贵州':
+                        content = await AutoDxx.auto_guizhou(int(item['qq']))
                         status = content['status']
                     else:
                         content = {
