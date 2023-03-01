@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://gchat.qpic.cn/gchatpic_new/0/0-0-9865300DB8C27C86C050DAEF684C66D4/0" alt="auto_teenstudy.png" border="0" width="500px" height="500px"/>
+    <img src="https://i.328888.xyz/2023/02/28/z23ho.png" alt="auto_teenstudy.png" border="0" width="500px" height="500px"/>
     <h1>nonebot_plugin_auto_teenstudy</h1>
     <b>基于nonebot2的青年大学习自动提交插件，用于自动完成大学习，在后台留下记录，返回完成截图</b>
     <br/>
@@ -12,12 +12,16 @@
      <a href="https://github.com/ZM25XC/nonebot_plugin_auto_teenstudy">
     <img src="https://visitor-badge.glitch.me/badge?page_id=https://github.com/ZM25XC/nonebot_plugin_auto_teenstudy" alt="nonebot_plugin_auto_teenstudy"></a>
 		<a href="https://github.com/ZM25XC/nonebot_plugin_auto_teenstudy/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/ZM25XC/nonebot_plugin_auto_teenstudy?style=flat-square"></a>
+    <a href="https://jq.qq.com/?_wv=1027&k=NGFEwXyS">
+    <img src="https://img.shields.io/badge/QQ%E7%BE%A4-511173803-orange?style=flat-square" alt="QQ Chat Group">
+  </a>
   </div>
 
 
-
-
-
+## 提示
+- 本插件为基础版，目前兼容地区更多一些，需要Web UI 可前往另一仓库查看
+- Web UI 版添加用户更加方便，兼容性更高，欢迎加入QQ交流群讨论。
+- 仓库地址：https://github.com/ZM25XC/TeenStudy
 
 ## 导航
 * [各地区使用方式](#各地区使用方式（已经支持地区）)
@@ -32,7 +36,6 @@
 * [更新日志](#更新日志)
 
 
-
 ## 各地区使用方式（已经支持地区）
 
 - [江西地区](./nonebot_plugin_auto_teenstudy/resource/area/江西地区.md)
@@ -43,7 +46,6 @@
 - [四川地区](./nonebot_plugin_auto_teenstudy/resource/area/四川地区.md)
 - [河南地区](./nonebot_plugin_auto_teenstudy/resource/area/河南地区.md)
 - [江苏地区](./nonebot_plugin_auto_teenstudy/resource/area/江苏地区.md)
-- [辽宁地区](./nonebot_plugin_auto_teenstudy/resource/area/辽宁地区.md)
 - [上海地区](./nonebot_plugin_auto_teenstudy/resource/area/上海地区.md)
 - [吉林地区](./nonebot_plugin_auto_teenstudy/resource/area/吉林地区.md)
 - [重庆地区](./nonebot_plugin_auto_teenstudy/resource/area/重庆地区.md)
@@ -82,7 +84,6 @@
     ├── 📜 .env.dev
     ├── 📜 .env.prod
     ├── 📜 .gitignore
-    ├── 📜 bot.py
     ├── 📜 docker-compose.yml
     ├── 📜 Dockerfile
     ├── 📜 pyproject.toml
@@ -92,7 +93,7 @@
     
 
 **使用第二种安装方式**
-- 在`bot.py`中添加`nonebot.load_plugin("nonebot_plugin_auto_teenstudy")`或在`pyproject.toml`里的`[tool.nonebot]`中添加`plugins = ["nonebot_plugin_auto_teenstudy"]`
+- 在`pyproject.toml`里的`[tool.nonebot]`中添加`plugins = ["nonebot_plugin_auto_teenstudy"]`
 
 
 ## 机器人配置
@@ -103,16 +104,7 @@
   SUPERUSERS=[""]
   ```
   
-- 在bot.py文件中添加定时配置
-
-    ```python
-    nonebot.init(apscheduler_autostart=True)
-    nonebot.init(apscheduler_config={
-        "apscheduler.timezone": "Asia/Shanghai"
-    })
-    ```
-
-    
+  
 
 
 ## 功能列表
@@ -176,6 +168,14 @@
 - [ ] ~~逐步升级成群管插件~~
 
 ## 更新日志
+
+### 2023/03/01
+
+- 屏蔽辽宁地区
+- 修改依赖，解决依赖冲突问题
+- 更新江西地区团支部数据
+- 修复江西地区提交失败问题
+
 
 ### 2022/09/25
 
