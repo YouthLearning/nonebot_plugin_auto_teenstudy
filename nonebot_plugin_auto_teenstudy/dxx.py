@@ -1259,7 +1259,6 @@ class AutoDxx:
                     headers = {
                         "Host": "dxx.hngqt.org.cn",
                         "Connection": "keep-alive",
-                        "Content-Length": "13",
                         "Accept": "application/json, text/javascript, */*; q=0.01",
                         "X-Requested-With": "XMLHttpRequest",
                         "User-Agent": "Mozilla/5.0 (Linux; Android 12; M2007J3SC Build/SKQ1.220303.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/3262 MMWEBSDK/20220204 Mobile Safari/537.36 MMWEBID/6170 MicroMessenger/8.0.20.2100(0x28001438) Process/toolsmp WeChat/arm32 Weixin NetType/WIFI Language/zh_CN ABI/arm64",
@@ -1281,9 +1280,10 @@ class AutoDxx:
                         response.encoding = response.charset_encoding
                         project_id = response.json()['data']['list'][0]['project_id']
                         params = {
-                            "projectid": project_id
+                            "projectid": project_id,
+                            "ctoken": "ALV4KTxYJbQCtuhf5tq5zwi4ngPJXWbvQRHc/NyyUR+c/0lATF5ZCA8K/0D4s/+C"
                         }
-                        url = f"http://dxx.hngqt.org.cn/study/studyAdd?time={int(time.time())}"
+                        url = f"http://dxx.hngqt.org.cn/study/studyAdd?time={int(time.time()*1000)}"
                         async with AsyncClient(headers=headers, max_redirects=5, timeout=30) as client:
                             response = await client.post(url=url, json=params)
                         response.encoding = response.charset_encoding
