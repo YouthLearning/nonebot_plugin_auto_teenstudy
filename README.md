@@ -19,7 +19,7 @@
 
 
 ## 提示
-- 本插件为基础版，目前兼容地区更多一些，需要Web UI 可前往另一仓库查看
+- 本插件为基础版，目前基础版可用地区Web UI版已经全部适配，以后基础版停更，请移步Web UI版
 - Web UI 版添加用户更加方便，兼容性更高，欢迎加入QQ交流群讨论。
 - 仓库地址：https://github.com/ZM25XC/TeenStudy
 
@@ -47,10 +47,7 @@
 - [河南地区](./nonebot_plugin_auto_teenstudy/resource/area/河南地区.md)
 - [江苏地区](./nonebot_plugin_auto_teenstudy/resource/area/江苏地区.md)
 - [上海地区](./nonebot_plugin_auto_teenstudy/resource/area/上海地区.md)
-- [吉林地区](./nonebot_plugin_auto_teenstudy/resource/area/吉林地区.md)
 - [重庆地区](./nonebot_plugin_auto_teenstudy/resource/area/重庆地区.md)
-- [湖南地区](./nonebot_plugin_auto_teenstudy/resource/area/湖南地区.md)
-- [贵州地区](./nonebot_plugin_auto_teenstudy/resource/area/贵州地区.md)
 
 **其他地区努力适配中**
 
@@ -168,6 +165,13 @@
 - [ ] ~~逐步升级成群管插件~~
 
 ## 更新日志
+
+### 2023/03/18
+
+- 屏蔽湖南地区
+- 屏蔽贵州地区
+- 屏蔽吉林地区
+- 修复重庆地区提交失败问题
 
 ### 2023/03/01
 
