@@ -9,8 +9,6 @@
     <a href="https://pypi.python.org/pypi/nonebot_plugin_auto_teenstudy"><img src="https://img.shields.io/pypi/v/nonebot_plugin_auto_teenstudy?color=yellow" alt="pypi"></a>
   	<a href="https://pypi.python.org/pypi/nonebot_plugin_auto_teenstudy">
     <img src="https://img.shields.io/pypi/dm/nonebot_plugin_auto_teenstudy" alt="pypi download"></a>
-     <a href="https://github.com/ZM25XC/nonebot_plugin_auto_teenstudy">
-    <img src="https://visitor-badge.glitch.me/badge?page_id=https://github.com/ZM25XC/nonebot_plugin_auto_teenstudy" alt="nonebot_plugin_auto_teenstudy"></a>
 		<a href="https://github.com/ZM25XC/nonebot_plugin_auto_teenstudy/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/ZM25XC/nonebot_plugin_auto_teenstudy?style=flat-square"></a>
     <a href="https://jq.qq.com/?_wv=1027&k=NGFEwXyS">
     <img src="https://img.shields.io/badge/QQ%E7%BE%A4-511173803-orange?style=flat-square" alt="QQ Chat Group">
@@ -19,7 +17,8 @@
 
 
 ## 提示
-- 本插件为基础版，目前基础版可用地区Web UI版已经全部适配，以后基础版停更，请移步Web UI版
+- 本插件为基础版，目前基础版可用地区Web UI版已经全部适配，请移步Web UI版
+- 本插件将在暑假进行重构，请等待更新，更新期间可使用Web UI版本进行提交大学习
 - Web UI 版添加用户更加方便，兼容性更高，欢迎加入QQ交流群讨论。
 - 仓库地址：https://github.com/ZM25XC/TeenStudy
 
@@ -44,10 +43,9 @@
 - [安徽地区](./nonebot_plugin_auto_teenstudy/resource/area/安徽地区.md)
 - [山东地区](./nonebot_plugin_auto_teenstudy/resource/area/山东地区.md)
 - [四川地区](./nonebot_plugin_auto_teenstudy/resource/area/四川地区.md)
-- [河南地区](./nonebot_plugin_auto_teenstudy/resource/area/河南地区.md)
-- [江苏地区](./nonebot_plugin_auto_teenstudy/resource/area/江苏地区.md)
 - [上海地区](./nonebot_plugin_auto_teenstudy/resource/area/上海地区.md)
 - [重庆地区](./nonebot_plugin_auto_teenstudy/resource/area/重庆地区.md)
+- [吉林地区](./nonebot_plugin_auto_teenstudy/resource/area/吉林地区.md)
 
 **其他地区努力适配中**
 
@@ -141,7 +139,6 @@
 
 ## 提醒
 
-- 本插件需要安装nonebot官方定时插件`pip install nonebot-plugin-apscheduler`
 - 本插件只适配高校，其他需要使用请前往另一仓库根据提交源码自行修改
 - 不会抓包请看参考
 - 需要cookie(token)的地区，抓取到cookie(token)后，请尽量别点进官方公众号，以免cookie(token)刷新
@@ -165,6 +162,14 @@
 - [ ] ~~逐步升级成群管插件~~
 
 ## 更新日志
+
+### 2023/06/16
+
+- 更新nonebot2强制插件元字段
+- 更新依赖
+- 开放吉林地区
+- 移除江苏、河南、辽宁、湖南、贵州地区
+- 项目进入重构阶段，请等待更新，更新期间可使用Web UI版本
 
 ### 2023/03/18
 

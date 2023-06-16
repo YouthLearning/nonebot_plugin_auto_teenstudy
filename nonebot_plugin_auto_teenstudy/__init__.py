@@ -7,7 +7,7 @@ from nonebot import require
 from nonebot.log import logger
 from datetime import datetime
 from nonebot.permission import SUPERUSER
-from nonebot.plugin import on_command
+from nonebot.plugin import on_command,PluginMetadata
 from nonebot.rule import to_me
 from nonebot.adapters.onebot.v11 import MessageSegment, Event, PrivateMessageEvent, PRIVATE
 from .msg_pic import pic
@@ -15,6 +15,22 @@ from .dxx import AutoDxx
 from .getData import get_own, get_end_pic, get_answer, crawl_answer
 from .handle_dxx_data import HandleDxx
 
+
+
+__plugin_meta__ = PluginMetadata(
+    name='nonebot_plugin_auto_teenstudy',
+    description='一个可以自动提交青年大学习的插件',
+    usage='添加大学习',
+    homepage="https://github.com/ZM25XC/nonebot_plugin_auto_teenstudy",
+    type="application",
+    supported_adapters={"~onebot.v11"},
+    extra={
+        'author': 'ZM25XC',
+        'version': '0.1.9',
+        'priority': 5,
+    }
+
+)
 scheduler = require('nonebot_plugin_apscheduler').scheduler
 super_id = nonebot.get_driver().config.superusers  # 超管id
 path = os.path.dirname(__file__) + '/data'  # 数据存放目录
@@ -79,15 +95,6 @@ async def dxx(event: Event):
                 elif item['area'] == '山东':
                     content = await AutoDxx.auto_shandong(send_id)
                     status = content['status']
-                elif item['area'] == '河南':
-                    content = await AutoDxx.auto_henan(send_id)
-                    status = content['status']
-                elif item['area'] == '江苏':
-                    content = await AutoDxx.auto_jiangsu(send_id)
-                    status = content['status']
-                # elif item['area'] == '辽宁':
-                #     content = await AutoDxx.auto_liaoning(send_id)
-                #     status = content['status']
                 elif item['area'] == '上海':
                     content = await AutoDxx.auto_shanghai(send_id)
                     status = content['status']
@@ -96,12 +103,6 @@ async def dxx(event: Event):
                     status = content['status']
                 elif item['area'] == '重庆':
                     content = await AutoDxx.auto_chongqing(send_id)
-                    status = content['status']
-                elif item['area'] == '湖南':
-                    content = await AutoDxx.auto_hunan(send_id)
-                    status = content['status']
-                elif item['area'] == '贵州':
-                    content = await AutoDxx.auto_guizhou(send_id)
                     status = content['status']
                 else:
                     content = {
@@ -214,15 +215,6 @@ async def set_dxx(event: Event):
             elif area == '山东':
                 content = await HandleDxx.set_shandong(send_id=send_id, event=str(event.get_message()))
                 status = content['status']
-            elif area == '河南':
-                content = await HandleDxx.set_henan(send_id=send_id, event=str(event.get_message()))
-                status = content['status']
-            elif area == '江苏':
-                content = await HandleDxx.set_jiangsu(send_id=send_id, event=str(event.get_message()))
-                status = content['status']
-            # elif area == '辽宁':
-            #     content = await HandleDxx.set_liaoning(send_id=send_id, event=str(event.get_message()))
-            #     status = content['status']
             elif area == '上海':
                 content = await HandleDxx.set_shanghai(send_id=send_id, event=str(event.get_message()))
                 status = content['status']
@@ -231,12 +223,6 @@ async def set_dxx(event: Event):
                 status = content['status']
             elif area == '重庆':
                 content = await HandleDxx.set_chongqing(send_id=send_id, event=str(event.get_message()))
-                status = content['status']
-            elif area == '湖南':
-                content = await HandleDxx.set_hunan(send_id=send_id, event=str(event.get_message()))
-                status = content['status']
-            elif area == '贵州':
-                content = await HandleDxx.set_guizhou(send_id=send_id, event=str(event.get_message()))
                 status = content['status']
             else:
                 content = {
@@ -358,15 +344,6 @@ async def add_dxx(event: Event):
             elif area == '山东':
                 content = await HandleDxx.set_shandong(send_id=qq, event=str(event.get_message()))
                 status = content['status']
-            elif area == '河南':
-                content = await HandleDxx.set_henan(send_id=qq, event=str(event.get_message()))
-                status = content['status']
-            elif area == '江苏':
-                content = await HandleDxx.set_jiangsu(send_id=qq, event=str(event.get_message()))
-                status = content['status']
-            # elif area == '辽宁':
-            #     content = await HandleDxx.set_liaoning(send_id=qq, event=str(event.get_message()))
-            #     status = content['status']
             elif area == '上海':
                 content = await HandleDxx.set_shanghai(send_id=qq, event=str(event.get_message()))
                 status = content['status']
@@ -375,12 +352,6 @@ async def add_dxx(event: Event):
                 status = content['status']
             elif area == '重庆':
                 content = await HandleDxx.set_chongqing(send_id=qq, event=str(event.get_message()))
-                status = content['status']
-            elif area == '湖南':
-                content = await HandleDxx.set_hunan(send_id=qq, event=str(event.get_message()))
-                status = content['status']
-            elif area == '贵州':
-                content = await HandleDxx.set_guizhou(send_id=qq, event=str(event.get_message()))
                 status = content['status']
             else:
                 content = {
@@ -478,15 +449,6 @@ async def check_dxx_user(event: Event):
                 elif area == '山东':
                     content = await HandleDxx.check_shandong(send_id=check_id)
                     status = content['status']
-                elif area == '河南':
-                    content = await HandleDxx.check_henan(send_id=check_id)
-                    status = content['status']
-                elif area == '江苏':
-                    content = await HandleDxx.check_jiangsu(send_id=check_id)
-                    status = content['status']
-                # elif area == '辽宁':
-                #     content = await HandleDxx.check_liaoning(send_id=check_id)
-                #     status = content['status']
                 elif area == '上海':
                     content = await HandleDxx.check_shanghai(send_id=check_id)
                     status = content['status']
@@ -495,12 +457,6 @@ async def check_dxx_user(event: Event):
                     status = content['status']
                 elif area == '重庆':
                     content = await HandleDxx.check_chongqing(send_id=check_id)
-                    status = content['status']
-                elif area == '湖南':
-                    content = await HandleDxx.check_hunan(send_id=check_id)
-                    status = content['status']
-                elif area == '贵州':
-                    content = await HandleDxx.check_guizhou(send_id=check_id)
                     status = content['status']
                 else:
                     status = 404
@@ -599,15 +555,6 @@ async def my_dxx(event: Event):
                 elif area == '山东':
                     content = await HandleDxx.check_shandong(send_id=check_id)
                     status = content['status']
-                elif area == '河南':
-                    content = await HandleDxx.check_henan(send_id=check_id)
-                    status = content['status']
-                elif area == '江苏':
-                    content = await HandleDxx.check_jiangsu(send_id=check_id)
-                    status = content['status']
-                # elif area == '辽宁':
-                #     content = await HandleDxx.check_liaoning(send_id=check_id)
-                #     status = content['status']
                 elif area == '上海':
                     content = await HandleDxx.check_shanghai(send_id=check_id)
                     status = content['status']
@@ -616,12 +563,6 @@ async def my_dxx(event: Event):
                     status = content['status']
                 elif area == '重庆':
                     content = await HandleDxx.check_chongqing(send_id=check_id)
-                    status = content['status']
-                elif area == '湖南':
-                    content = await HandleDxx.check_hunan(send_id=check_id)
-                    status = content['status']
-                elif area == '贵州':
-                    content = await HandleDxx.check_guizhou(send_id=check_id)
                     status = content['status']
                 else:
                     status = 404
@@ -797,15 +738,6 @@ async def finish_dxx(event: Event):
                     elif item['area'] == '山东':
                         content = await AutoDxx.auto_shandong(finish_id)
                         status = content['status']
-                    elif item['area'] == '河南':
-                        content = await AutoDxx.auto_henan(finish_id)
-                        status = content['status']
-                    elif item['area'] == '江苏':
-                        content = await AutoDxx.auto_jiangsu(finish_id)
-                        status = content['status']
-                    # elif item['area'] == '辽宁':
-                    #     content = await AutoDxx.auto_liaoning(finish_id)
-                    #     status = content['status']
                     elif item['area'] == '上海':
                         content = await AutoDxx.auto_shanghai(finish_id)
                         status = content['status']
@@ -814,12 +746,6 @@ async def finish_dxx(event: Event):
                         status = content['status']
                     elif item['area'] == '重庆':
                         content = await AutoDxx.auto_chongqing(finish_id)
-                        status = content['status']
-                    elif item['area'] == '湖南':
-                        content = await AutoDxx.auto_hunan(finish_id)
-                        status = content['status']
-                    elif item['area'] == '贵州':
-                        content = await AutoDxx.auto_guizhou(finish_id)
                         status = content['status']
                     else:
                         content = {
@@ -1900,15 +1826,6 @@ async def all_submit(event: Event):
                     elif item['area'] == '山东':
                         content = await AutoDxx.auto_shandong(int(item['qq']))
                         status = content['status']
-                    elif item['area'] == '河南':
-                        content = await AutoDxx.auto_henan(int(item['qq']))
-                        status = content['status']
-                    elif item['area'] == '江苏':
-                        content = await AutoDxx.auto_jiangsu(int(item['qq']))
-                        status = content['status']
-                    # elif item['area'] == '辽宁':
-                    #     content = await AutoDxx.auto_liaoning(int(item['qq']))
-                    #     status = content['status']
                     elif item['area'] == '上海':
                         content = await AutoDxx.auto_shanghai(int(item['qq']))
                         status = content['status']
@@ -1917,12 +1834,6 @@ async def all_submit(event: Event):
                         status = content['status']
                     elif item['area'] == '重庆':
                         content = await AutoDxx.auto_chongqing(int(item['qq']))
-                        status = content['status']
-                    elif item['area'] == '湖南':
-                        content = await AutoDxx.auto_hunan(int(item['qq']))
-                        status = content['status']
-                    elif item['area'] == '贵州':
-                        content = await AutoDxx.auto_guizhou(int(item['qq']))
                         status = content['status']
                     else:
                         content = {
@@ -1990,15 +1901,6 @@ async def all_submit(event: Event):
                     elif item['area'] == '山东':
                         content = await AutoDxx.auto_shandong(int(item['qq']))
                         status = content['status']
-                    elif item['area'] == '河南':
-                        content = await AutoDxx.auto_henan(int(item['qq']))
-                        status = content['status']
-                    elif item['area'] == '江苏':
-                        content = await AutoDxx.auto_jiangsu(int(item['qq']))
-                        status = content['status']
-                    # elif item['area'] == '辽宁':
-                    #     content = await AutoDxx.auto_liaoning(int(item['qq']))
-                    #     status = content['status']
                     elif item['area'] == '上海':
                         content = await AutoDxx.auto_shanghai(int(item['qq']))
                         status = content['status']
@@ -2007,12 +1909,6 @@ async def all_submit(event: Event):
                         status = content['status']
                     elif item['area'] == '重庆':
                         content = await AutoDxx.auto_chongqing(int(item['qq']))
-                        status = content['status']
-                    elif item['area'] == '湖南':
-                        content = await AutoDxx.auto_hunan(int(item['qq']))
-                        status = content['status']
-                    elif item['area'] == '贵州':
-                        content = await AutoDxx.auto_guizhou(int(item['qq']))
                         status = content['status']
                     else:
                         content = {

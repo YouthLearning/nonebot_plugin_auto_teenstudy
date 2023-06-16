@@ -47,18 +47,6 @@ class AutoDxx:
                         content = await AutoDxx.auto_shandong(send_id)
                         status = content['status']
                         return content
-                    elif item['area'] == '河南':
-                        content = await AutoDxx.auto_henan(send_id)
-                        status = content['status']
-                        return content
-                    elif item['area'] == '江苏':
-                        content = await AutoDxx.auto_jiangsu(send_id)
-                        status = content['status']
-                        return content
-                    elif item['area'] == '辽宁':
-                        content = await AutoDxx.auto_liaoning(send_id)
-                        status = content['status']
-                        return content
                     elif item['area'] == '上海':
                         content = await AutoDxx.auto_shanghai(send_id)
                         status = content['status']
@@ -69,14 +57,6 @@ class AutoDxx:
                         return content
                     elif item['area'] == '重庆':
                         content = await AutoDxx.auto_chongqing(send_id)
-                        status = content['status']
-                        return content
-                    elif item['area'] == '湖南':
-                        content = await AutoDxx.auto_hunan(send_id)
-                        status = content['status']
-                        return content
-                    elif item['area'] == '贵州':
-                        content = await AutoDxx.auto_guizhou(send_id)
                         status = content['status']
                         return content
                     else:
@@ -692,304 +672,6 @@ class AutoDxx:
             }
             return data
 
-    # 河南共青团青年大学习提交
-    @staticmethod
-    async def auto_henan(send_id):
-        with open(path + '/dxx_list.json', 'r', encoding='utf-8') as f:
-            obj = json.load(f)
-        try:
-            mark = False
-            with open(path + '/dxx_answer.json', 'r', encoding='utf-8') as a:
-                answer_obj = json.load(a)
-            dxx_name = list(answer_obj)[-1]["catalogue"]
-            commit_time = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
-            for item in obj:
-                if int(send_id) == int(item['qq']):
-                    qq = int(item['qq'])
-                    group = item['auto_commit']['send_group']
-                    leader = item['leader']
-                    name = item['name']
-                    area = item['area']
-                    openid = item['openid']
-                    cookie = item['cookie']
-                    university = item['university']
-                    college = item['college']
-                    class_name = item['class_name']
-                    get_new_study_headers = {
-                        "Host": "hnqndaxuexi.dahejs.cn",
-                        "Connection": "keep-alive",
-                        "accept": "*/*",
-                        "User-Agent": "Mozilla/5.0 (Linux; Android 12; M2007J3SC Build/SKQ1.220303.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/3262 MMWEBSDK/20220204 Mobile Safari/537.36 MMWEBID/6170 MicroMessenger/8.0.20.2100(0x28001438) Process/toolsmp WeChat/arm32 Weixin NetType/WIFI Language/zh_CN ABI/arm64",
-                        "Content-Type": "application/json",
-                        "X-Requested-With": "com.tencent.mm",
-                        "Referer": "http://hnqndaxuexi.dahejs.cn/study/studyList",
-                        "Accept-Encoding": "gzip, deflate",
-                        "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
-                        "Cookie": cookie
-                    }
-                    get_new_study_url = "http://hnqndaxuexi.dahejs.cn/stw/news/list?&pageNumber=1&pageSize=10"
-                    async with AsyncClient(headers=get_new_study_headers, timeout=30, max_redirects=5) as client:
-                        response = await client.get(url=get_new_study_url)
-                    if response.status_code == 200:
-                        response.encoding = response.charset_encoding
-                        newsid = response.json()['obj']['news']['list'][0]['id']
-                        commit_url = f"http://hnqndaxuexi.dahejs.cn/stw/news/study/{newsid}"
-                        commit_headers = {
-                            "Host": "hnqndaxuexi.dahejs.cn",
-                            "Connection": "keep-alive",
-                            "accept": "*/*",
-                            "User-Agent": "Mozilla/5.0 (Linux; Android 12; M2007J3SC Build/SKQ1.220303.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/3262 MMWEBSDK/20220204 Mobile Safari/537.36 MMWEBID/6170 MicroMessenger/8.0.20.2100(0x28001438) Process/toolsmp WeChat/arm32 Weixin NetType/WIFI Language/zh_CN ABI/arm64",
-                            "token": openid,
-                            "Content-Type": "application/json",
-                            "X-Requested-With": "com.tencent.mm",
-                            "Referer": "http://hnqndaxuexi.dahejs.cn/study/studyList",
-                            "Accept-Encoding": "gzip, deflate",
-                            "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
-                            "Cookie": cookie
-                        }
-                        async with AsyncClient(headers=commit_headers, max_redirects=5, timeout=30) as client:
-                            response = await client.post(url=commit_url, headers=commit_headers)
-                        response.encoding = response.charset_encoding
-                        if response.json()['result'] == 200:
-                            item.update(dxx_name=dxx_name, commit_time=commit_time)
-                            msg = f'\n青年大学习{dxx_name}提交成功！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid:{openid}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}'
-                            data = {
-                                'msg': msg,
-                                "status": 200
-                            }
-                            with open(path + '/dxx_list.json', 'w', encoding='utf-8') as w:
-                                json.dump(obj, w, indent=4, ensure_ascii=False)
-                            return data
-                        else:
-                            data = {
-                                'msg': f'\n青年大学习{dxx_name}提交失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid:{openid}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
-                                'status': 503
-                            }
-                            return data
-                    else:
-                        data = {
-                            'msg': f'\n青年大学习{dxx_name}提交失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid:{openid}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
-                            'status': 503
-                        }
-                        return data
-            if not mark:
-                data = {
-                    'msg': f'\n青年大学习{dxx_name}提交失败！\n用户信息不存在！\n添加用户信息指令：设置大学习配置',
-                    'status': 404
-                }
-                return data
-
-        except Exception as result:
-            data = {
-                "msg": result,
-                "status": 404
-            }
-            return data
-
-    # 江苏共青团青年大学习提交
-    @staticmethod
-    async def auto_jiangsu(send_id):
-        with open(path + '/dxx_list.json', 'r', encoding='utf-8') as f:
-            obj = json.load(f)
-        try:
-            mark = False
-            with open(path + '/dxx_answer.json', 'r', encoding='utf-8') as a:
-                answer_obj = json.load(a)
-            dxx_name = list(answer_obj)[-1]["catalogue"]
-            commit_time = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
-            for item in obj:
-                if int(send_id) == int(item['qq']):
-                    qq = int(item['qq'])
-                    group = item['auto_commit']['send_group']
-                    leader = item['leader']
-                    name = item['name']
-                    area = item['area']
-                    cookie = item['cookie']
-                    university = item['university']
-                    college = item['college']
-                    class_name = item['class_name']
-                    headers = {
-                        "Host": "service.jiangsugqt.org",
-                        "Connection": "keep-alive",
-                        "Upgrade-Insecure-Requests": '1',
-                        "User-Agent": "Mozilla/5.0 (Linux; Android 12; M2007J3SC Build/SKQ1.220303.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/3262 MMWEBSDK/20220204 Mobile Safari/537.36 MMWEBID/6170 MicroMessenger/8.0.20.2100(0x28001438) Process/toolsmp WeChat/arm32 Weixin NetType/WIFI Language/zh_CN ABI/arm64",
-                        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/wxpic,image/tpg,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-                        "X-Requested-With": "com.tencent.mm",
-                        "Sec-Fetch-Site": "none",
-                        "Sec-Fetch-Mode": "navigate",
-                        "Sec-Fetch-User": "?1",
-                        "Sec-Fetch-Dest": "document",
-                        "Accept-Encoding": "gzip, deflate",
-                        "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
-                        "Cookie": cookie
-                    }
-                    url = "https://service.jiangsugqt.org/youth/lesson/confirm"
-                    async with AsyncClient(headers=headers, timeout=30, max_redirects=5) as client:
-                        response = await client.get(url=url)
-                    if response.status_code == 200:
-                        response.encoding = response.charset_encoding
-                        token = re.findall(r'var token = "(.*?)";', response.text)[0]
-                        lesson_id = re.findall(r"'lesson_id':(.*)", response.text)[0]
-                        params = {
-                            "_token": token,
-                            "lesson_id": lesson_id
-                        }
-                        async with AsyncClient(headers=headers, max_redirects=5, timeout=30) as client:
-                            response = await client.post(url=url, json=params)
-                        response.encoding = response.charset_encoding
-                        if response.json()['status'] == 1:
-                            item.update(dxx_name=dxx_name, commit_time=commit_time)
-                            msg = f'\n青年大学习{dxx_name}提交成功！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}'
-                            data = {
-                                'msg': msg,
-                                "status": 200
-                            }
-                            with open(path + '/dxx_list.json', 'w', encoding='utf-8') as w:
-                                json.dump(obj, w, indent=4, ensure_ascii=False)
-                            return data
-                        else:
-                            data = {
-                                'msg': f'\n青年大学习{dxx_name}提交失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
-                                'status': 503
-                            }
-                            return data
-                    else:
-                        data = {
-                            'msg': f'\n青年大学习{dxx_name}提交失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
-                            'status': 503
-                        }
-                        return data
-            if not mark:
-                data = {
-                    'msg': f'\n青年大学习{dxx_name}提交失败！\n用户信息不存在！\n添加用户信息指令：设置大学习配置',
-                    'status': 404
-                }
-                return data
-
-        except Exception as result:
-            data = {
-                "msg": result,
-                "status": 404
-            }
-            return data
-
-    # 辽宁共青团青年大学习提交
-    # @staticmethod
-    # async def auto_liaoning(send_id):
-    #     with open(path + '/dxx_list.json', 'r', encoding='utf-8') as f:
-    #         obj = json.load(f)
-    #     try:
-    #         mark = False
-    #         with open(path + '/dxx_answer.json', 'r', encoding='utf-8') as a:
-    #             answer_obj = json.load(a)
-    #         dxx_name = list(answer_obj)[-1]["catalogue"]
-    #         commit_time = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
-    #         for item in obj:
-    #             if int(send_id) == int(item['qq']):
-    #                 qq = int(item['qq'])
-    #                 group = item['auto_commit']['send_group']
-    #                 leader = item['leader']
-    #                 name = item['name']
-    #                 area = item['area']
-    #                 cookie = item['cookie']
-    #                 university = item['university']
-    #                 college = item['college']
-    #                 class_name = item['class_name']
-    #                 info_headers = {
-    #                     "Host": "api.lngqt.shechem.cn",
-    #                     "Connection": "keep-alive",
-    #                     "Content-Length": "6",
-    #                     "Accept": "application/json, text/plain, */*",
-    #                     "User-Agent": "Mozilla/5.0 (Linux; Android 12; M2007J3SC Build/SKQ1.220303.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/3262 MMWEBSDK/20220204 Mobile Safari/537.36 MMWEBID/6170 MicroMessenger/8.0.20.2100(0x28001438) Process/toolsmp WeChat/arm32 Weixin NetType/WIFI Language/zh_CN ABI/arm64",
-    #                     "Content-Type": "application/json;charset=UTF-8",
-    #                     "Origin": "http://websecond.lngqt.shechem.cn",
-    #                     "X-Requested-With": "com.tencent.mm",
-    #                     "Referer": "http://websecond.lngqt.shechem.cn/my",
-    #                     "Accept-Encoding": "gzip, deflate",
-    #                     "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
-    #                     "Cookie": cookie
-    #                 }
-    #                 params = {
-    #                     "token": ""
-    #                 }
-    #                 info_url = "http://api.lngqt.shechem.cn/user/user/find"
-    #                 response = requests.post(url=info_url, headers=info_headers, json=params, timeout=(10, 15))
-    #                 if response.status_code == 200:
-    #                     response = gzip.decompress(response.content).decode("utf-8")
-    #                     token = json.loads(response)['data']['openid']
-    #                     new_study_url = "http://api.lngqt.shechem.cn/webapi/learn/getnowlearn"
-    #                     study_headers = {
-    #                         "Host": "api.lngqt.shechem.cn",
-    #                         "Connection": "keep-alive",
-    #                         "Content-Length": "6",
-    #                         "Accept": "application/json, text/plain, */*",
-    #                         "User-Agent": "Mozilla/5.0 (Linux; Android 12; M2007J3SC Build/SKQ1.220303.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/3262 MMWEBSDK/20220204 Mobile Safari/537.36 MMWEBID/6170 MicroMessenger/8.0.20.2100(0x28001438) Process/toolsmp WeChat/arm32 Weixin NetType/WIFI Language/zh_CN ABI/arm64",
-    #                         "Content-Type": "application/x-www-form-urlencoded",
-    #                         "Origin": "http://websecond.lngqt.shechem.cn",
-    #                         "X-Requested-With": "com.tencent.mm",
-    #                         "Referer": "http://websecond.lngqt.shechem.cn/study",
-    #                         "Accept-Encoding": "gzip, deflate",
-    #                         "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
-    #                         "Cookie": cookie
-    #                     }
-    #                     params = {
-    #                         "token": token
-    #                     }
-    #                     response = requests.post(url=new_study_url, headers=study_headers, json=params,
-    #                                              timeout=(10, 15))
-    #                     if response.status_code == 200:
-    #                         response = gzip.decompress(response.content).decode("utf-8")
-    #                         lid = json.loads(response)['data']['id']
-    #                         commit_url = "http://api.lngqt.shechem.cn/webapi/learn/addlearnlog"
-    #                         params = {
-    #                             "lid": lid,
-    #                             "token": token
-    #                         }
-    #                         response = requests.post(url=commit_url, headers=study_headers, json=params,
-    #                                                  timeout=(10, 15))
-    #                         response = gzip.decompress(response.content).decode("utf-8")
-    #                         if json.loads(response)['errCode'] == 0:
-    #                             item.update(dxx_name=dxx_name, commit_time=commit_time)
-    #                             msg = f'\n青年大学习{dxx_name}提交成功！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}'
-    #                             data = {
-    #                                 'msg': msg,
-    #                                 "status": 200
-    #                             }
-    #                             with open(path + '/dxx_list.json', 'w', encoding='utf-8') as w:
-    #                                 json.dump(obj, w, indent=4, ensure_ascii=False)
-    #                             return data
-    #                         else:
-    #                             data = {
-    #                                 'msg': f'\n青年大学习{dxx_name}提交失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
-    #                                 'status': 503
-    #                             }
-    #                             return data
-    #                     else:
-    #                         data = {
-    #                             'msg': f'\n青年大学习{dxx_name}提交失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
-    #                             'status': 503
-    #                         }
-    #                         return data
-    #                 else:
-    #                     data = {
-    #                         'msg': f'\n青年大学习{dxx_name}提交失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
-    #                         'status': 503
-    #                     }
-    #                     return data
-    #         if not mark:
-    #             data = {
-    #                 'msg': f'\n青年大学习{dxx_name}提交失败！\n用户信息不存在！\n添加用户信息指令：设置大学习配置',
-    #                 'status': 404
-    #             }
-    #             return data
-
-    #     except Exception as result:
-    #         data = {
-    #             "msg": result,
-    #             "status": 404
-    #         }
-    #         return data
-
     # 青春上海青年大学习提交
     @staticmethod
     async def auto_shanghai(send_id):
@@ -1088,74 +770,74 @@ class AutoDxx:
             return data
 
     # 吉青飞扬青年大学习提交
-    # @staticmethod
-    # async def auto_jilin(send_id):
-    #     with open(path + '/dxx_list.json', 'r', encoding='utf-8') as f:
-    #         obj = json.load(f)
-    #     try:
-    #         mark = False
-    #         with open(path + '/dxx_answer.json', 'r', encoding='utf-8') as a:
-    #             answer_obj = json.load(a)
-    #         dxx_name = list(answer_obj)[-1]["catalogue"]
-    #         commit_time = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
-    #         for item in obj:
-    #             if int(send_id) == int(item['qq']):
-    #                 qq = int(item['qq'])
-    #                 group = item['auto_commit']['send_group']
-    #                 leader = item['leader']
-    #                 name = item['name']
-    #                 area = item['area']
-    #                 openid = item['openid']
-    #                 student_id = item['student_id']
-    #                 university = item['university']
-    #                 college = item['college']
-    #                 class_name = item['class_name']
-    #                 headers = {
-    #                     "Host": "jqfy.jl54.org",
-    #                     "Connection": "keep-alive",
-    #                     "Upgrade-Insecure-Requests": "1",
-    #                     "User-Agent": "Mozilla/5.0 (Linux; Android 12; M2007J3SC Build/SKQ1.220303.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/3262 MMWEBSDK/20220204 Mobile Safari/537.36 MMWEBID/6170 MicroMessenger/8.0.20.2100(0x28001438) Process/toolsmp WeChat/arm32 Weixin NetType/WIFI Language/zh_CN ABI/arm64",
-    #                     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/wxpic,image/tpg,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-    #                     "X-Requested-With": "com.tencent.mm",
-    #                     "Accept-Encoding": "gzip, deflate",
-    #                     "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7"
-    #                 }
-    #                 url = f"http://jqfy.jl54.org/jltw/wechat/editStudyRecord/{student_id}"
-    #                 params = {
-    #                     "openid": openid
-    #                 }
-    #                 async with AsyncClient(headers=headers, max_redirects=5, timeout=30) as client:
-    #                     response = await client.post(url=url, data=params)
-    #                 response.encoding = response.charset_encoding
-    #                 if response.json()['code'] == '0001':
-    #                     item.update(dxx_name=dxx_name, commit_time=commit_time)
-    #                     msg = f'\n青年大学习{dxx_name}提交成功！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid：{openid}\nstudent_id：{student_id}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}'
-    #                     data = {
-    #                         'msg': msg,
-    #                         "status": 200
-    #                     }
-    #                     with open(path + '/dxx_list.json', 'w', encoding='utf-8') as w:
-    #                         json.dump(obj, w, indent=4, ensure_ascii=False)
-    #                     return data
-    #                 else:
-    #                     data = {
-    #                         'msg': f'\n青年大学习{dxx_name}提交失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid：{openid}\nstudent_id：{student_id}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
-    #                         'status': 503
-    #                     }
-    #                     return data
-    #         if not mark:
-    #             data = {
-    #                 'msg': f'\n青年大学习{dxx_name}提交失败！\n用户信息不存在！\n添加用户信息指令：设置大学习配置',
-    #                 'status': 404
-    #             }
-    #             return data
+    @staticmethod
+    async def auto_jilin(send_id):
+        with open(path + '/dxx_list.json', 'r', encoding='utf-8') as f:
+            obj = json.load(f)
+        try:
+            mark = False
+            with open(path + '/dxx_answer.json', 'r', encoding='utf-8') as a:
+                answer_obj = json.load(a)
+            dxx_name = list(answer_obj)[-1]["catalogue"]
+            commit_time = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
+            for item in obj:
+                if int(send_id) == int(item['qq']):
+                    qq = int(item['qq'])
+                    group = item['auto_commit']['send_group']
+                    leader = item['leader']
+                    name = item['name']
+                    area = item['area']
+                    openid = item['openid']
+                    student_id = item['student_id']
+                    university = item['university']
+                    college = item['college']
+                    class_name = item['class_name']
+                    headers = {
+                        "Host": "jqfy.jl54.org",
+                        "Connection": "keep-alive",
+                        "Upgrade-Insecure-Requests": "1",
+                        "User-Agent": "Mozilla/5.0 (Linux; Android 12; M2007J3SC Build/SKQ1.220303.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/3262 MMWEBSDK/20220204 Mobile Safari/537.36 MMWEBID/6170 MicroMessenger/8.0.20.2100(0x28001438) Process/toolsmp WeChat/arm32 Weixin NetType/WIFI Language/zh_CN ABI/arm64",
+                        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/wxpic,image/tpg,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+                        "X-Requested-With": "com.tencent.mm",
+                        "Accept-Encoding": "gzip, deflate",
+                        "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7"
+                    }
+                    url = f"http://jqfy.jl54.org/jltw/wechat/editStudyRecord/{student_id}"
+                    params = {
+                        "openid": openid
+                    }
+                    async with AsyncClient(headers=headers, max_redirects=5, timeout=30) as client:
+                        response = await client.post(url=url, data=params)
+                    response.encoding = response.charset_encoding
+                    if response.json()['code'] == '0001':
+                        item.update(dxx_name=dxx_name, commit_time=commit_time)
+                        msg = f'\n青年大学习{dxx_name}提交成功！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid：{openid}\nstudent_id：{student_id}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}'
+                        data = {
+                            'msg': msg,
+                            "status": 200
+                        }
+                        with open(path + '/dxx_list.json', 'w', encoding='utf-8') as w:
+                            json.dump(obj, w, indent=4, ensure_ascii=False)
+                        return data
+                    else:
+                        data = {
+                            'msg': f'\n青年大学习{dxx_name}提交失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid：{openid}\nstudent_id：{student_id}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
+                            'status': 503
+                        }
+                        return data
+            if not mark:
+                data = {
+                    'msg': f'\n青年大学习{dxx_name}提交失败！\n用户信息不存在！\n添加用户信息指令：设置大学习配置',
+                    'status': 404
+                }
+                return data
 
-    #     except Exception as result:
-    #         data = {
-    #             "msg": result,
-    #             "status": 404
-    #         }
-    #         return data
+        except Exception as result:
+            data = {
+                "msg": result,
+                "status": 404
+            }
+            return data
 
     # 重庆共青团青年大学习提交
     @staticmethod
@@ -1233,217 +915,6 @@ class AutoDxx:
                 "status": 404
             }
             return data
-
-    # 湖南共青团青年大学习提交
-    # @staticmethod
-    # async def auto_hunan(send_id):
-    #     with open(path + '/dxx_list.json', 'r', encoding='utf-8') as f:
-    #         obj = json.load(f)
-    #     try:
-    #         mark = False
-    #         with open(path + '/dxx_answer.json', 'r', encoding='utf-8') as a:
-    #             answer_obj = json.load(a)
-    #         dxx_name = list(answer_obj)[-1]["catalogue"]
-    #         commit_time = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
-    #         for item in obj:
-    #             if int(send_id) == int(item['qq']):
-    #                 qq = int(item['qq'])
-    #                 group = item['auto_commit']['send_group']
-    #                 leader = item['leader']
-    #                 name = item['name']
-    #                 area = item['area']
-    #                 cookie = item['cookie']
-    #                 university = item['university']
-    #                 college = item['college']
-    #                 class_name = item['class_name']
-    #                 headers = {
-    #                     "Host": "dxx.hngqt.org.cn",
-    #                     "Connection": "keep-alive",
-    #                     "Content-Length": "13",
-    #                     "Accept": "application/json, text/javascript, */*; q=0.01",
-    #                     "X-Requested-With": "XMLHttpRequest",
-    #                     "User-Agent": "Mozilla/5.0 (Linux; Android 12; M2007J3SC Build/SKQ1.220303.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/3262 MMWEBSDK/20220204 Mobile Safari/537.36 MMWEBID/6170 MicroMessenger/8.0.20.2100(0x28001438) Process/toolsmp WeChat/arm32 Weixin NetType/WIFI Language/zh_CN ABI/arm64",
-    #                     "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-    #                     "Origin": "http://dxx.hngqt.org.cn",
-    #                     "Referer": "http://dxx.hngqt.org.cn/project/index",
-    #                     "Accept-Encoding": "gzip, deflate",
-    #                     "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
-    #                     "Cookie": cookie
-    #                 }
-    #                 url = f"http://dxx.hngqt.org.cn/project/list?time={int(time.time())}"
-    #                 params = {
-    #                     "page": "1",
-    #                     "pageSize": "10"
-    #                 }
-    #                 async with AsyncClient(headers=headers, timeout=30, max_redirects=5) as client:
-    #                     response = await client.post(url=url, json=params)
-    #                 if response.status_code == 200:
-    #                     response.encoding = response.charset_encoding
-    #                     project_id = response.json()['data']['list'][0]['project_id']
-    #                     params = {
-    #                         "projectid": project_id
-    #                     }
-    #                     url = f"http://dxx.hngqt.org.cn/study/studyAdd?time={int(time.time())}"
-    #                     async with AsyncClient(headers=headers, max_redirects=5, timeout=30) as client:
-    #                         response = await client.post(url=url, json=params)
-    #                     response.encoding = response.charset_encoding
-    #                     if response.json()['success']:
-    #                         item.update(dxx_name=dxx_name, commit_time=commit_time)
-    #                         msg = f'\n青年大学习{dxx_name}提交成功！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}'
-    #                         data = {
-    #                             'msg': msg,
-    #                             "status": 200
-    #                         }
-    #                         with open(path + '/dxx_list.json', 'w', encoding='utf-8') as w:
-    #                             json.dump(obj, w, indent=4, ensure_ascii=False)
-    #                         return data
-    #                     else:
-    #                         data = {
-    #                             'msg': f'\n青年大学习{dxx_name}提交失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
-    #                             'status': 503
-    #                         }
-    #                         return data
-    #                 else:
-    #                     data = {
-    #                         'msg': f'\n青年大学习{dxx_name}提交失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\ncookie：{cookie}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
-    #                         'status': 503
-    #                     }
-    #                     return data
-    #         if not mark:
-    #             data = {
-    #                 'msg': f'\n青年大学习{dxx_name}提交失败！\n用户信息不存在！\n添加用户信息指令：设置大学习配置',
-    #                 'status': 404
-    #             }
-    #             return data
-
-    #     except Exception as result:
-    #         data = {
-    #             "msg": result,
-    #             "status": 404
-    #         }
-    #         return data
-
-    # 青春黔言青年大学习提交
-    # @staticmethod
-    # async def auto_guizhou(send_id):
-        # with open(path + '/dxx_list.json', 'r', encoding='utf-8') as f:
-        #     obj = json.load(f)
-        # try:
-        #     mark = False
-        #     with open(path + '/dxx_answer.json', 'r', encoding='utf-8') as a:
-        #         answer_obj = json.load(a)
-        #     dxx_name = list(answer_obj)[-1]["catalogue"]
-        #     commit_time = datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
-        #     for item in obj:
-        #         if int(send_id) == int(item['qq']):
-        #             """
-        #             "openId": "",
-        #             "nickname": "",
-        #             "photo": "",
-        #             "universityId": "",
-        #             "universityCode": "",
-        #             "collegeId": "",
-        #             "collegeCode": "",
-        #             "deptStr": "",
-        #             "name": "",
-        #             "areaIndex": "",
-        #             "type": "school",
-        #             "editType": "1"
-        #             """
-        #             qq = int(item['qq'])
-        #             group = item['auto_commit']['send_group']
-        #             leader = item['leader']
-        #             name = item['name']
-        #             area = item['area']
-        #             openid = item['openid']
-        #             university = item['university']
-        #             college = item['college']
-        #             class_name = item['class_name']
-        #             get_token_headers = {
-        #                 "Host": "qzymb.gzyouth.cn",
-        #                 "Connection": "keep-alive",
-        #                 "Content-Length": "0",
-        #                 "User-Agent": "Mozilla/5.0 (Linux; Android 12; M2007J3SC Build/SKQ1.220303.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/3262 MMWEBSDK/20220204 Mobile Safari/537.36 MMWEBID/6170 MicroMessenger/8.0.20.2100(0x28001438) Process/toolsmp WeChat/arm32 Weixin NetType/WIFI Language/zh_CN ABI/arm64",
-        #                 "auth": "true",
-        #                 "content-type": "application/json",
-        #                 "Accept": "*/*",
-        #                 "Origin": "http://qzymb.gzyouth.cn",
-        #                 "X-Requested-With": "com.tencent.mm",
-        #                 "Accept-Encoding": "gzip, deflate",
-        #                 "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7"
-        #             }
-        #             params = {
-        #                 "openId": openid,
-        #                 "nickname": "",
-        #                 "photo": "",
-        #                 "universityId": "",
-        #                 "universityCode": "",
-        #                 "collegeId": "",
-        #                 "collegeCode": "",
-        #                 "deptStr": "",
-        #                 "name": name,
-        #                 "areaIndex": "",
-        #                 "type": "school",
-        #                 "editType": "1"
-        #             }
-        #             get_token_url = "http://qzymb.gzyouth.cn/youth/api/learnerController/register"
-        #             async with AsyncClient(headers=get_token_headers, timeout=30, max_redirects=5) as client:
-        #                 response = await client.post(url=get_token_url, json=params)
-        #             if response.status_code == 200:
-        #                 response.encoding = response.charset_encoding
-        #                 token = response.json()['data']['token']
-        #                 commit_headers = {
-        #                     "Host": "qzymb.gzyouth.cn",
-        #                     "Connection": "keep-alive",
-        #                     "Content-Length": "0",
-        #                     "User-Agent": "Mozilla/5.0 (Linux; Android 12; M2007J3SC Build/SKQ1.220303.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/3262 MMWEBSDK/20220204 Mobile Safari/537.36 MMWEBID/6170 MicroMessenger/8.0.20.2100(0x28001438) Process/toolsmp WeChat/arm32 Weixin NetType/WIFI Language/zh_CN ABI/arm64",
-        #                     "Authorization": token,
-        #                     "content-type": "application/json",
-        #                     "Accept": "*/*",
-        #                     "Origin": "http://qzymb.gzyouth.cn",
-        #                     "X-Requested-With": "com.tencent.mm",
-        #                     "Accept-Encoding": "gzip, deflate",
-        #                     "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7"
-        #                 }
-        #                 commit_url = "http://qzymb.gzyouth.cn/youth/api/term/getReadedTermIds"
-        #                 async with AsyncClient(headers=commit_headers, max_redirects=5, timeout=30) as client:
-        #                     response = await client.post(url=commit_url, json=params)
-        #                 response.encoding = response.charset_encoding
-        #                 if response.json()['code'] == 10001:
-        #                     item.update(dxx_name=dxx_name, commit_time=commit_time)
-        #                     msg = f'\n青年大学习{dxx_name}提交成功！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid：{openid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}'
-        #                     data = {
-        #                         'msg': msg,
-        #                         "status": 200
-        #                     }
-        #                     with open(path + '/dxx_list.json', 'w', encoding='utf-8') as w:
-        #                         json.dump(obj, w, indent=4, ensure_ascii=False)
-        #                     return data
-        #                 else:
-        #                     data = {
-        #                         'msg': f'\n青年大学习{dxx_name}提交失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid：{openid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
-        #                         'status': 503
-        #                     }
-        #                     return data
-        #             else:
-        #                 data = {
-        #                     'msg': f'\n青年大学习{dxx_name}提交失败！\n请稍后使用指令：提交大学习 提交大学习！\n用户信息\n姓名：{name}\nQQ号:{send_id}\n地区：{area}\nopenid：{openid}\n学校：{university}\n学院：{college}\n班级(团支部)：{class_name}\n最近提交的大学习：\n提交期数：{dxx_name}\n提交时间：{commit_time}',
-        #                     'status': 503
-        #                 }
-        #                 return data
-        #     if not mark:
-        #         data = {
-        #             'msg': f'\n青年大学习{dxx_name}提交失败！\n用户信息不存在！\n添加用户信息指令：设置大学习配置',
-        #             'status': 404
-        #         }
-        #         return data
-
-        # except Exception as result:
-        #     data = {
-        #         "msg": result,
-        #         "status": 404
-        #     }
-        #     return data
 
 
 AutoDxx = AutoDxx()
